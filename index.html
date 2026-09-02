@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petaurino 🐾</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            background: #f7ead8;
+            color: #4b3828;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 430px;
+            min-height: 100vh;
+            background: #fff8ed;
+            padding: 24px 18px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            color: #9b8065;
+            font-size: 14px;
+            margin-top: 3px;
+        }
+
+        .heart {
+            background: #ffd9df;
+            padding: 10px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .room {
+            height: 420px;
+            border-radius: 28px;
+            background: linear-gradient(
+                145deg,
+                #d9e8c5,
+                #b7d29e
+            );
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(80, 60, 30, 0.15);
+            margin-bottom: 20px;
+        }
+
+        .branch {
+            position: absolute;
+            width: 80%;
+            height: 28px;
+            background: #806044;
+            border-radius: 20px;
+            transform: rotate(-12deg);
+            left: 10%;
+            top: 28%;
+        }
+
+        .branch.two {
+            transform: rotate(15deg);
+            top: 55%;
+            width: 60%;
+            left: 35%;
+        }
+
+        .leaf {
+            position: absolute;
+            font-size: 42px;
+        }
+
+        .leaf.one { top: 10%; left: 8%; }
+        .leaf.two { top: 18%; right: 8%; }
+        .leaf.three { bottom: 12%; left: 10%; }
+        .leaf.four { bottom: 8%; right: 12%; }
+
+        .sandrine {
+            position: absolute;
+            left: 50%;
+            top: 47%;
+            transform: translate(-50%, -50%);
+            font-size: 110px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            user-select: none;
+        }
+
+        .sandrine:active {
+            transform: translate(-50%, -50%) scale(0.9);
+        }
+
+        .speech {
+            position: absolute;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 18px;
+            top: 12%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .stat {
+            background: white;
+            border-radius: 18px;
+            padding: 12px;
+            box-shadow: 0 4px 12px rgba(80,60,30,0.07);
+        }
+
+        .stat-name {
+            font-size: 12px;
+            color: #947c65;
+            margin-bottom: 6px;
+        }
+
+        .bar {
+            height: 9px;
+            background: #eee5da;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 100%;
+            width: 80%;
+            border-radius: 10px;
+            background: #f3a65c;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        button {
+            border: none;
+            border-radius: 18px;
+            padding: 13px 5px;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+        }
+
+        .food { background: #e89a45; }
+        .play { background: #75b56b; }
+        .love { background: #e88496; }
+        .sleep { background: #7188c7; }
+
+        .message {
+            text-align: center;
+            min-height: 24px;
+            margin-top: 15px;
+            color: #806b55;
+            font-size: 14px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="header">
+        <div>
+            <div class="title">🐾 Sandrina</div>
+            <div class="subtitle">Il vostro piccolo mondo</div>
+        </div>
+
+        <div class="heart">❤️ 90</div>
+    </div>
+
+    <div class="room">
+
+        <div class="leaf one">🌿</div>
+        <div class="leaf two">🌿</div>
+        <div class="leaf three">🌿</div>
+        <div class="leaf four">🌿</div>
+
+        <div class="branch"></div>
+        <div class="branch two"></div>
+
+        <div class="speech" id="speech">
+            Ehi! Mi cercavi? 👀
+        </div>
+
+        <div class="sandrine" onclick="petSandrine()">
+            🐿️
+        </div>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            <div class="stat-name">🍎 Fame</div>
+            <div class="bar">
+                <div class="fill" id="hunger" style="width: 80%;"></div>
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-name">❤️ Felicità</div>
+            <div class="bar">
+                <div class="fill" id="happiness" style="width: 90%;"></div>
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-name">⚡ Energia</div>
+            <div class="bar">
+                <div class="fill" id="energy" style="width: 70%;"></div>
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-name">💧 Pulizia</div>
+            <div class="bar">
+                <div class="fill" id="clean"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="actions">
+
+        <button class="food" onclick="feed()">
+            🍎<br>CIBO
+        </button>
+
+        <button class="play" onclick="play()">
+            🎾<br>GIOCA
+        </button>
+
+        <button class="love" onclick="cuddle()">
+            ❤️<br>COCCOLE
+        </button>
+
+        <button class="sleep" onclick="sleep()">
+            🌙<br>NANNA
+        </button>
+
+    </div>
+
+    <div class="message" id="message">
+        Sandrina sta aspettando voi 🐾
+    </div>
+
+</div>
+
+<script>
+
+    let hunger = 80;
+    let happiness = 90;
+    let energy = 70;
+    let clean = 85;
+
+    function updateBars() {
+        document.getElementById("hunger").style.width = hunger + "%";
+        document.getElementById("happiness").style.width = happiness + "%";
+        document.getElementById("energy").style.width = energy + "%";
+        document.getElementById("clean").style.width = clean + "%";
+    }
+
+    function message(text) {
+        document.getElementById("message").textContent = text;
+    }
+
+    function feed() {
+        hunger = Math.min(100, hunger + 15);
+        happiness = Math.min(100, happiness + 3);
+
+        message("🍎 Sandrina ha mangiato! Gnam gnam.");
+        document.getElementById("speech").textContent = "Era buonissima! 🤤";
+
+        updateBars();
+    }
+
+    function play() {
+        happiness = Math.min(100, happiness + 15);
+        energy = Math.max(0, energy - 10);
+
+        message("🎾 Sandrina vuole giocare ancora!");
+        document.getElementById("speech").textContent = "Prendimi! 😂";
+
+        updateBars();
+    }
+
+    function cuddle() {
+        happiness = Math.min(100, happiness + 10);
+
+        message("❤️ Sandrina fa le fusa.");
+        document.getElementById("speech").textContent = "Coccoleeee 🥹";
+
+        updateBars();
+    }
+
+    function sleep() {
+        energy = Math.min(100, energy + 25);
+        happiness = Math.max(0, happiness - 2);
+
+        message("🌙 Sandrina si è addormentata...");
+        document.getElementById("speech").textContent = "Zzz... 💤";
+
+        updateBars();
+    }
+
+    function petSandrine() {
+        happiness = Math.min(100, happiness + 5);
+
+        message("❤️ Hai accarezzato Sandrina.");
+        document.getElementById("speech").textContent = "Ehehe! ❤️";
+
+        updateBars();
+    }
+
+    updateBars();
+
+</script>
+
+</body>
+</html>
