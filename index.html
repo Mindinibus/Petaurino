@@ -1,293 +1,946 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="apple-mobile-web-app-capable" content="yes">
+
+<meta name="viewport"
+      content="width=device-width,
+      initial-scale=1.0,
+      maximum-scale=1.0,
+      user-scalable=no">
+
+<meta name="apple-mobile-web-app-capable"
+      content="yes">
+
+<meta name="theme-color"
+      content="#f8efe2">
 
 <title>Petaurino</title>
 
+
 <style>
+
+/* =========================================
+   BASE
+========================================= */
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-    background: #eadbc7;
-    color: #49382a;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "Helvetica Neue",
+        sans-serif;
+
+    background:
+        #eadcca;
+
+    color:
+        #49382a;
+
     min-height: 100vh;
+
+    overflow-x: hidden;
 }
+
 
 button {
+
     font-family: inherit;
+
     border: none;
+
     cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
 }
+
+
+/* =========================================
+   APP
+========================================= */
 
 .app {
+
     width: 100%;
-    max-width: 440px;
+
+    max-width: 480px;
+
     min-height: 100vh;
+
     margin: auto;
-    background: #fff8ed;
-    padding: 20px 16px 30px;
+
+    background:
+        #fff8ed;
+
+    padding:
+        18px 16px 28px;
+
 }
 
-/* HEADER */
+
+/* =========================================
+   HEADER
+========================================= */
 
 .header {
+
     display: flex;
-    justify-content: space-between;
+
     align-items: center;
-    margin-bottom: 18px;
+
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+
 }
+
+
+.logo-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.logo-paw {
+
+    width: 43px;
+
+    height: 43px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background:
+        #ead6b8;
+
+    font-size: 23px;
+
+}
+
 
 .title {
-    font-size: 29px;
-    font-weight: 800;
+
+    font-size: 25px;
+
+    font-weight: 850;
+
+    letter-spacing: -0.7px;
+
 }
+
 
 .subtitle {
-    color: #a08770;
-    font-size: 13px;
-    margin-top: 3px;
+
+    font-size: 12px;
+
+    color:
+        #a28b73;
+
+    margin-top: 2px;
+
 }
+
 
 .level {
-    background: #ffe0e3;
-    padding: 9px 13px;
-    border-radius: 18px;
-    font-weight: 700;
-    color: #bd6473;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    background:
+        #ffe0e4;
+
+    color:
+        #bc6575;
+
+    padding:
+        9px 12px;
+
+    border-radius: 16px;
+
+    font-size: 12px;
+
+    font-weight: 750;
+
 }
 
-/* STANZA */
+
+/* =========================================
+   ROOM
+========================================= */
 
 .room {
-    height: 400px;
-    border-radius: 30px;
+
     position: relative;
+
+    height: 410px;
+
     overflow: hidden;
+
+    border-radius: 30px;
+
     background:
-        radial-gradient(circle at 20% 15%, #e7efcf 0 5%, transparent 6%),
-        linear-gradient(145deg, #dcebc5, #b6d29c);
-    box-shadow: 0 12px 30px rgba(80, 60, 30, .14);
+
+        linear-gradient(
+            180deg,
+            #dfe9ca 0%,
+            #c8dda9 62%,
+            #b5cf94 100%
+        );
+
+    box-shadow:
+
+        0 15px 35px
+        rgba(82,61,36,.14);
+
 }
 
-/* decorazioni */
+
+/* luce */
+
+.room::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+
+    height: 260px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.25);
+
+    top: -120px;
+
+    left: -80px;
+
+}
+
+
+/* pavimento */
+
+.floor {
+
+    position: absolute;
+
+    width: 130%;
+
+    height: 150px;
+
+    left: -15%;
+
+    bottom: -70px;
+
+    border-radius: 50%;
+
+    background:
+        #a5c17f;
+
+}
+
+
+/* =========================================
+   DECORAZIONI
+========================================= */
 
 .branch {
+
     position: absolute;
-    height: 25px;
-    background: #7b5c43;
+
+    height: 24px;
+
     border-radius: 20px;
-    transform: rotate(-12deg);
+
+    background:
+        #79583f;
+
+    box-shadow:
+        inset 0 -4px 0
+        rgba(0,0,0,.08);
+
 }
+
 
 .branch.one {
-    width: 80%;
-    left: 10%;
+
+    width: 85%;
+
+    left: 7%;
+
     top: 30%;
+
+    transform:
+        rotate(-9deg);
+
 }
+
 
 .branch.two {
-    width: 62%;
+
+    width: 65%;
+
     right: -5%;
-    top: 58%;
-    transform: rotate(16deg);
+
+    top: 60%;
+
+    transform:
+        rotate(15deg);
+
 }
+
+
+.branch.three {
+
+    width: 45%;
+
+    left: -5%;
+
+    top: 72%;
+
+    transform:
+        rotate(-18deg);
+
+}
+
 
 .leaf {
+
     position: absolute;
-    font-size: 38px;
+
+    font-size: 35px;
+
+    opacity: .8;
+
+    user-select: none;
+
 }
+
 
 .leaf.one {
+
+    top: 9%;
+
     left: 7%;
-    top: 8%;
+
 }
+
 
 .leaf.two {
+
+    top: 17%;
+
     right: 8%;
-    top: 16%;
+
 }
+
 
 .leaf.three {
-    left: 8%;
-    bottom: 10%;
+
+    bottom: 18%;
+
+    left: 9%;
+
 }
+
 
 .leaf.four {
-    right: 12%;
-    bottom: 8%;
+
+    bottom: 10%;
+
+    right: 8%;
+
 }
+
+
+/* =========================================
+   AMACA
+========================================= */
+
+.hammock {
+
+    position: absolute;
+
+    width: 115px;
+
+    height: 65px;
+
+    left: 50%;
+
+    top: 68%;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        #d993a2;
+
+    border-radius:
+        10px 10px 55px 55px;
+
+    box-shadow:
+        0 7px 10px
+        rgba(70,50,30,.12);
+
+}
+
+
+.hammock::before,
+.hammock::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 3px;
+
+    height: 70px;
+
+    background:
+        #79583f;
+
+    top: -55px;
+
+}
+
+
+.hammock::before {
+
+    left: 5px;
+
+    transform:
+        rotate(28deg);
+
+}
+
+
+.hammock::after {
+
+    right: 5px;
+
+    transform:
+        rotate(-28deg);
+
+}
+
+
+/* =========================================
+   TANA
+========================================= */
 
 .hideout {
+
     position: absolute;
-    right: 12%;
-    bottom: 14%;
-    width: 75px;
-    height: 65px;
-    background: #8d694b;
-    border-radius: 15px 15px 25px 25px;
+
+    right: 10%;
+
+    bottom: 15%;
+
+    width: 72px;
+
+    height: 62px;
+
+    border-radius:
+        18px 18px 12px 12px;
+
+    background:
+        #8b6749;
+
+    box-shadow:
+        0 8px 12px
+        rgba(60,40,20,.12);
+
 }
 
-.hideout::after {
+
+.hideout::before {
+
     content: "";
+
     position: absolute;
+
     width: 27px;
-    height: 30px;
-    background: #473427;
-    border-radius: 50% 50% 0 0;
-    left: 24px;
+
+    height: 31px;
+
+    background:
+        #49372a;
+
+    left: 22px;
+
     bottom: 0;
+
+    border-radius:
+        50% 50% 0 0;
+
 }
 
-/* SANDRINA */
+
+/* =========================================
+   PIANTA
+========================================= */
+
+.plant {
+
+    position: absolute;
+
+    left: 8%;
+
+    bottom: 11%;
+
+    font-size: 45px;
+
+}
+
+
+/* =========================================
+   GIOCATTOLO
+========================================= */
+
+.ball {
+
+    position: absolute;
+
+    left: 18%;
+
+    bottom: 17%;
+
+    width: 34px;
+
+    height: 34px;
+
+    border-radius: 50%;
+
+    background:
+        #78a969;
+
+    box-shadow:
+        inset -5px -5px 0
+        rgba(0,0,0,.08);
+
+}
+
+
+/* =========================================
+   SANDRINA
+========================================= */
 
 .sandrine {
+
     position: absolute;
+
     left: 50%;
-    top: 47%;
-    transform: translate(-50%, -50%);
-    font-size: 105px;
-    user-select: none;
-    transition: .25s ease;
-    z-index: 5;
+
+    top: 46%;
+
+    transform:
+        translate(-50%,-50%);
+
+    width: 150px;
+
+    height: 150px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 10;
+
+    transition:
+        transform .35s ease,
+        opacity .35s ease;
+
 }
+
+
+.sandrine img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+    user-select: none;
+
+    pointer-events: none;
+
+}
+
+
+/* provvisoria */
+
+.sandrine-placeholder {
+
+    font-size: 92px;
+
+    filter:
+        drop-shadow(
+            0 8px 7px
+            rgba(70,50,30,.12)
+        );
+
+}
+
+
+/* animazioni */
 
 .sandrine.happy {
-    transform: translate(-50%, -50%) scale(1.08) rotate(-3deg);
+
+    animation:
+        happyJump .55s ease;
+
 }
 
-.sandrine.sleeping {
-    transform: translate(-50%, -50%) scale(.9);
+
+.sandrine.cuddle {
+
+    animation:
+        cuddle .8s ease;
+
+}
+
+
+.sandrine.sleep {
+
+    transform:
+        translate(-50%,-50%)
+        scale(.82);
+
     opacity: .9;
+
 }
 
-.sandrine.sad {
-    transform: translate(-50%, -50%) scale(.94);
+
+@keyframes happyJump {
+
+    0% {
+        transform:
+            translate(-50%,-50%);
+    }
+
+    45% {
+        transform:
+            translate(-50%,-63%)
+            rotate(-5deg)
+            scale(1.08);
+    }
+
+    100% {
+        transform:
+            translate(-50%,-50%);
+    }
+
 }
+
+
+@keyframes cuddle {
+
+    0%,100% {
+        transform:
+            translate(-50%,-50%)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            translate(-50%,-50%)
+            scale(1.08);
+    }
+
+}
+
+
+/* =========================================
+   FUMETTO
+========================================= */
 
 .speech {
+
     position: absolute;
-    top: 10%;
+
+    z-index: 20;
+
+    top: 8%;
+
     left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    padding: 10px 15px;
-    border-radius: 18px;
-    font-size: 14px;
-    font-weight: 650;
+
+    transform:
+        translateX(-50%);
+
+    padding:
+        10px 16px;
+
+    background:
+        rgba(255,255,255,.96);
+
+    border-radius:
+        20px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
     white-space: nowrap;
-    box-shadow: 0 5px 16px rgba(0,0,0,.1);
-    z-index: 10;
+
+    box-shadow:
+        0 7px 20px
+        rgba(70,50,30,.1);
+
+    animation:
+        speechIn .35s ease;
+
 }
 
-/* STATO */
+
+@keyframes speechIn {
+
+    from {
+        opacity: 0;
+        transform:
+            translateX(-50%)
+            translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateX(-50%)
+            translateY(0);
+    }
+
+}
+
+
+/* =========================================
+   STATO
+========================================= */
 
 .status {
+
     text-align: center;
-    padding: 14px 0 8px;
-    color: #806b55;
-    font-size: 14px;
+
+    min-height: 22px;
+
+    padding:
+        13px 5px 9px;
+
+    color:
+        #806b55;
+
+    font-size: 13px;
+
     font-weight: 650;
+
 }
 
-/* STATISTICHE */
+
+/* =========================================
+   STATISTICHE
+========================================= */
 
 .stats {
+
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 16px;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 9px;
+
+    margin-bottom: 15px;
+
 }
+
 
 .stat {
-    background: white;
-    border-radius: 18px;
-    padding: 12px;
-    box-shadow: 0 4px 12px rgba(80,60,30,.06);
+
+    background:
+        white;
+
+    padding:
+        11px 12px;
+
+    border-radius:
+        17px;
+
+    box-shadow:
+        0 5px 15px
+        rgba(80,60,30,.06);
+
 }
+
 
 .stat-top {
+
     display: flex;
+
     justify-content: space-between;
+
     margin-bottom: 7px;
+
 }
+
 
 .stat-name {
-    color: #927d68;
+
     font-size: 12px;
+
+    color:
+        #907b66;
+
 }
+
 
 .stat-number {
+
     font-size: 12px;
-    font-weight: 700;
+
+    font-weight: 800;
+
 }
+
 
 .bar {
-    height: 9px;
-    background: #eee5da;
-    border-radius: 10px;
+
+    height: 8px;
+
+    background:
+        #eee6dc;
+
+    border-radius:
+        10px;
+
     overflow: hidden;
+
 }
+
 
 .fill {
+
     height: 100%;
-    width: 80%;
-    border-radius: 10px;
-    transition: width .4s ease;
+
+    border-radius:
+        10px;
+
+    transition:
+        width .5s ease;
+
 }
 
+
 .hunger {
-    background: #eca44d;
+    background: #eca24c;
 }
 
 .happiness {
-    background: #e98799;
+    background: #e78699;
 }
 
 .energy {
-    background: #e7bd55;
+    background: #e5bd58;
 }
 
 .clean {
-    background: #72b8d0;
+    background: #70b5cc;
 }
 
-/* AZIONI */
+
+/* =========================================
+   AZIONI
+========================================= */
 
 .actions {
+
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+
+    grid-template-columns:
+        repeat(4,1fr);
+
     gap: 8px;
+
 }
+
 
 .action {
-    padding: 13px 4px 11px;
-    border-radius: 18px;
-    color: white;
-    font-weight: 750;
-    font-size: 12px;
-    transition: transform .12s;
+
+    min-height: 73px;
+
+    border-radius:
+        19px;
+
+    color:
+        white;
+
+    font-weight:
+        800;
+
+    font-size:
+        11px;
+
+    box-shadow:
+        0 5px 10px
+        rgba(60,40,20,.09);
+
+    transition:
+        transform .12s,
+        box-shadow .12s;
+
 }
+
 
 .action:active {
-    transform: scale(.94);
+
+    transform:
+        scale(.93);
+
+    box-shadow:
+        0 2px 5px
+        rgba(60,40,20,.08);
+
 }
+
 
 .action-icon {
-    font-size: 23px;
+
     display: block;
+
+    font-size: 24px;
+
     margin-bottom: 4px;
+
 }
 
+
 .food {
-    background: #e99b43;
+    background: #e99a42;
 }
 
 .play {
@@ -299,205 +952,570 @@ button {
 }
 
 .sleep {
-    background: #7287c5;
+    background: #7186c3;
 }
 
-/* MENU */
+
+/* =========================================
+   MENU SECONDARIO
+========================================= */
 
 .menu {
+
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 9px;
-    margin-top: 12px;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 8px;
+
+    margin-top: 9px;
+
 }
+
 
 .menu button {
-    background: #f1e6d7;
-    color: #806b55;
-    padding: 12px;
-    border-radius: 16px;
-    font-weight: 700;
+
+    padding:
+        11px;
+
+    border-radius:
+        16px;
+
+    background:
+        #f1e7da;
+
+    color:
+        #806b55;
+
+    font-size:
+        12px;
+
+    font-weight:
+        750;
+
 }
 
-/* DIARIO */
+
+/* =========================================
+   DIARIO
+========================================= */
 
 .diary {
-    display: none;
-    margin-top: 15px;
-    background: white;
-    border-radius: 22px;
-    padding: 16px;
-    box-shadow: 0 5px 15px rgba(80,60,30,.07);
+
+    max-height: 0;
+
+    overflow: hidden;
+
+    opacity: 0;
+
+    margin-top: 10px;
+
+    background:
+        white;
+
+    border-radius:
+        20px;
+
+    padding:
+        0 15px;
+
+    box-shadow:
+        0 5px 15px
+        rgba(80,60,30,.06);
+
+    transition:
+        max-height .45s ease,
+        opacity .3s ease,
+        padding .3s ease;
+
 }
+
 
 .diary.visible {
-    display: block;
+
+    max-height:
+        420px;
+
+    opacity: 1;
+
+    padding:
+        15px;
+
 }
+
 
 .diary-title {
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 12px;
+
+    font-size:
+        17px;
+
+    font-weight:
+        850;
+
+    margin-bottom:
+        10px;
+
 }
+
 
 .entry {
-    padding: 10px 0;
-    border-bottom: 1px solid #eee5da;
-    font-size: 13px;
+
+    padding:
+        9px 0;
+
+    border-bottom:
+        1px solid #eee6dc;
+
+    font-size:
+        12px;
+
 }
+
 
 .entry:last-child {
-    border-bottom: none;
+
+    border-bottom:
+        none;
+
 }
+
 
 .entry-time {
-    color: #ae9880;
-    font-size: 11px;
-    margin-bottom: 3px;
+
+    font-size:
+        10px;
+
+    color:
+        #b09b84;
+
+    margin-bottom:
+        3px;
+
 }
 
-/* RESET */
+
+/* =========================================
+   FLOATING EFFECTS
+========================================= */
+
+.effect {
+
+    position: absolute;
+
+    pointer-events: none;
+
+    z-index: 50;
+
+    font-size: 25px;
+
+    animation:
+        floatUp 1s ease forwards;
+
+}
+
+
+@keyframes floatUp {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translateY(10px)
+            scale(.6);
+
+    }
+
+    30% {
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+            translateY(-70px)
+            scale(1.1);
+
+    }
+
+}
+
+
+/* =========================================
+   RESET
+========================================= */
 
 .reset {
-    margin-top: 18px;
-    text-align: center;
+
+    text-align:
+        center;
+
+    margin-top:
+        17px;
+
 }
+
 
 .reset button {
-    background: transparent;
-    color: #b19b84;
-    font-size: 11px;
+
+    background:
+        transparent;
+
+    color:
+        #b19b84;
+
+    font-size:
+        10px;
+
 }
 
-/* DESKTOP */
 
-@media (min-width: 600px) {
+/* =========================================
+   DESKTOP
+========================================= */
+
+@media (min-width:600px) {
+
     body {
-        padding: 20px;
+
+        padding:
+            20px;
+
     }
 
     .app {
-        border-radius: 30px;
-        min-height: auto;
+
+        border-radius:
+            30px;
+
+        min-height:
+            auto;
+
+        box-shadow:
+            0 20px 50px
+            rgba(60,40,20,.1);
+
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
+
+
+    <!-- HEADER -->
 
     <div class="header">
 
-        <div>
-            <div class="title">🐾 Sandrina</div>
-            <div class="subtitle">Il vostro piccolo mondo</div>
+        <div class="logo-area">
+
+            <div class="logo-paw">
+                🐾
+            </div>
+
+            <div>
+
+                <div class="title">
+                    Sandrina
+                </div>
+
+                <div class="subtitle">
+                    Il vostro piccolo mondo
+                </div>
+
+            </div>
+
         </div>
 
+
         <div class="level">
-            Lv. 1
+            ❤️ <span id="levelHeart">90</span>
         </div>
 
     </div>
 
-    <div class="room">
 
-        <div class="leaf one">🌿</div>
-        <div class="leaf two">🌿</div>
-        <div class="leaf three">🌿</div>
-        <div class="leaf four">🌿</div>
+
+    <!-- STANZA -->
+
+    <div class="room"
+         id="room">
+
+
+        <div class="leaf one">
+            🌿
+        </div>
+
+        <div class="leaf two">
+            🌿
+        </div>
+
+        <div class="leaf three">
+            🌿
+        </div>
+
+        <div class="leaf four">
+            🌿
+        </div>
+
 
         <div class="branch one"></div>
+
         <div class="branch two"></div>
+
+        <div class="branch three"></div>
+
+
+        <div class="hammock"></div>
 
         <div class="hideout"></div>
 
-        <div class="speech" id="speech">
+        <div class="plant">
+            🪴
+        </div>
+
+        <div class="ball"></div>
+
+        <div class="floor"></div>
+
+
+        <div class="speech"
+             id="speech">
+
             Ehi! Mi cercavi? 👀
+
         </div>
 
-        <div class="sandrine" id="sandrine" onclick="petSandrina()">
-            🐿️
+
+        <div class="sandrine"
+             id="sandrine"
+             onclick="petSandrina()">
+
+            <div
+                class="sandrine-placeholder"
+                id="placeholder">
+
+                🐿️
+
+            </div>
+
+            <img
+                id="sandrineImage"
+                src="images/sandrina-idle.png"
+                style="display:none"
+                alt="Sandrina">
+
         </div>
 
     </div>
 
-    <div class="status" id="status">
+
+
+    <!-- STATO -->
+
+    <div class="status"
+         id="status">
+
         Sandrina sta aspettando voi 🐾
+
     </div>
+
+
+
+    <!-- STATISTICHE -->
 
     <div class="stats">
 
+
         <div class="stat">
+
             <div class="stat-top">
-                <span class="stat-name">🍎 Fame</span>
-                <span class="stat-number" id="hungerNumber">80</span>
+
+                <span class="stat-name">
+                    🍎 Fame
+                </span>
+
+                <span class="stat-number"
+                      id="hungerNumber">
+                    80
+                </span>
+
             </div>
 
             <div class="bar">
-                <div class="fill hunger" id="hungerBar"></div>
+
+                <div
+                    class="fill hunger"
+                    id="hungerBar">
+                </div>
+
             </div>
+
         </div>
 
+
+
         <div class="stat">
+
             <div class="stat-top">
-                <span class="stat-name">❤️ Felicità</span>
-                <span class="stat-number" id="happinessNumber">90</span>
+
+                <span class="stat-name">
+                    ❤️ Felicità
+                </span>
+
+                <span class="stat-number"
+                      id="happinessNumber">
+                    90
+                </span>
+
             </div>
 
             <div class="bar">
-                <div class="fill happiness" id="happinessBar"></div>
+
+                <div
+                    class="fill happiness"
+                    id="happinessBar">
+                </div>
+
             </div>
+
         </div>
 
+
+
         <div class="stat">
+
             <div class="stat-top">
-                <span class="stat-name">⚡ Energia</span>
-                <span class="stat-number" id="energyNumber">70</span>
+
+                <span class="stat-name">
+                    ⚡ Energia
+                </span>
+
+                <span class="stat-number"
+                      id="energyNumber">
+                    70
+                </span>
+
             </div>
 
             <div class="bar">
-                <div class="fill energy" id="energyBar"></div>
+
+                <div
+                    class="fill energy"
+                    id="energyBar">
+                </div>
+
             </div>
+
         </div>
 
+
+
         <div class="stat">
+
             <div class="stat-top">
-                <span class="stat-name">💧 Pulizia</span>
-                <span class="stat-number" id="cleanNumber">85</span>
+
+                <span class="stat-name">
+                    💧 Pulizia
+                </span>
+
+                <span class="stat-number"
+                      id="cleanNumber">
+                    85
+                </span>
+
             </div>
 
             <div class="bar">
-                <div class="fill clean" id="cleanBar"></div>
+
+                <div
+                    class="fill clean"
+                    id="cleanBar">
+                </div>
+
             </div>
+
         </div>
+
 
     </div>
+
+
+
+    <!-- AZIONI -->
 
     <div class="actions">
 
-        <button class="action food" onclick="feed()">
-            <span class="action-icon">🍎</span>
+
+        <button
+            class="action food"
+            onclick="feed()">
+
+            <span class="action-icon">
+                🍎
+            </span>
+
             CIBO
+
         </button>
 
-        <button class="action play" onclick="play()">
-            <span class="action-icon">🎾</span>
+
+        <button
+            class="action play"
+            onclick="play()">
+
+            <span class="action-icon">
+                🎾
+            </span>
+
             GIOCA
+
         </button>
 
-        <button class="action love" onclick="cuddle()">
-            <span class="action-icon">❤️</span>
+
+        <button
+            class="action love"
+            onclick="cuddle()">
+
+            <span class="action-icon">
+                ❤️
+            </span>
+
             COCCOLE
+
         </button>
 
-        <button class="action sleep" onclick="sleep()">
-            <span class="action-icon">🌙</span>
+
+        <button
+            class="action sleep"
+            onclick="sleep()">
+
+            <span class="action-icon">
+                🌙
+            </span>
+
             NANNA
+
         </button>
+
 
     </div>
+
+
+
+    <!-- MENU -->
 
     <div class="menu">
 
@@ -511,7 +1529,13 @@ button {
 
     </div>
 
-    <div class="diary" id="diary">
+
+
+    <!-- DIARIO -->
+
+    <div
+        class="diary"
+        id="diary">
 
         <div class="diary-title">
             📖 Diario di Sandrina
@@ -521,50 +1545,70 @@ button {
 
     </div>
 
+
+
     <div class="reset">
+
         <button onclick="resetGame()">
             Ricomincia da capo
         </button>
+
     </div>
+
 
 </div>
 
 
+
 <script>
 
-/* =========================
-   DATI DEL GIOCO
-========================= */
+/* =========================================
+   STATO DEL GIOCO
+========================================= */
 
-let game = JSON.parse(localStorage.getItem("petaurino")) || {
+let game =
+JSON.parse(
+    localStorage.getItem("petaurino")
+) || {
 
     hunger: 80,
+
     happiness: 90,
+
     energy: 70,
+
     clean: 85,
 
     lastUpdate: Date.now(),
 
     diary: [
+
         {
-            time: new Date().toLocaleTimeString("it-IT", {
-                hour: "2-digit",
-                minute: "2-digit"
-            }),
-            text: "🐾 Sandrina è arrivata!"
+
+            time:
+                new Date()
+                .toLocaleTimeString(
+                    "it-IT",
+                    {
+                        hour:"2-digit",
+                        minute:"2-digit"
+                    }
+                ),
+
+            text:
+                "🐾 Sandrina è arrivata!"
         }
+
     ]
 
 };
 
 
-/* =========================
-   SALVATAGGIO
-========================= */
+/* =========================================
+   SALVA
+========================================= */
 
 function saveGame() {
-
-    game.lastUpdate = Date.now();
 
     localStorage.setItem(
         "petaurino",
@@ -574,49 +1618,72 @@ function saveGame() {
 }
 
 
-/* =========================
-   PASSAGGIO DEL TEMPO
-========================= */
+/* =========================================
+   TEMPO
+========================================= */
 
 function updateTime() {
 
-    const now = Date.now();
+    const now =
+        Date.now();
 
-    const elapsed =
-        (now - game.lastUpdate) / 60000;
+    const minutes =
+        (now - game.lastUpdate)
+        / 60000;
+
 
     /*
-       Ogni 10 minuti:
-       Fame -1
-       Felicità -0.5
-       Energia -0.5
-       Pulizia -1
+       Ogni 10 minuti.
     */
 
-    const units = elapsed / 10;
+    const units =
+        minutes / 10;
+
 
     game.hunger =
-        Math.max(0, game.hunger - units);
+        Math.max(
+            0,
+            game.hunger -
+            units
+        );
+
 
     game.happiness =
-        Math.max(0, game.happiness - units * 0.5);
+        Math.max(
+            0,
+            game.happiness -
+            units * .5
+        );
+
 
     game.energy =
-        Math.max(0, game.energy - units * 0.5);
+        Math.max(
+            0,
+            game.energy -
+            units * .5
+        );
+
 
     game.clean =
-        Math.max(0, game.clean - units);
+        Math.max(
+            0,
+            game.clean -
+            units
+        );
 
-    game.lastUpdate = now;
+
+    game.lastUpdate =
+        now;
+
 
     saveGame();
 
 }
 
 
-/* =========================
-   AGGIORNA INTERFACCIA
-========================= */
+/* =========================================
+   UI
+========================================= */
 
 function updateUI() {
 
@@ -633,30 +1700,58 @@ function updateUI() {
         Math.round(game.clean);
 
 
-    document.getElementById("hungerBar").style.width =
+    document.getElementById(
+        "hungerBar"
+    ).style.width =
         hunger + "%";
 
-    document.getElementById("happinessBar").style.width =
+
+    document.getElementById(
+        "happinessBar"
+    ).style.width =
         happiness + "%";
 
-    document.getElementById("energyBar").style.width =
+
+    document.getElementById(
+        "energyBar"
+    ).style.width =
         energy + "%";
 
-    document.getElementById("cleanBar").style.width =
+
+    document.getElementById(
+        "cleanBar"
+    ).style.width =
         clean + "%";
 
 
-    document.getElementById("hungerNumber").textContent =
+    document.getElementById(
+        "hungerNumber"
+    ).textContent =
         hunger;
 
-    document.getElementById("happinessNumber").textContent =
+
+    document.getElementById(
+        "happinessNumber"
+    ).textContent =
         happiness;
 
-    document.getElementById("energyNumber").textContent =
+
+    document.getElementById(
+        "energyNumber"
+    ).textContent =
         energy;
 
-    document.getElementById("cleanNumber").textContent =
+
+    document.getElementById(
+        "cleanNumber"
+    ).textContent =
         clean;
+
+
+    document.getElementById(
+        "levelHeart"
+    ).textContent =
+        happiness;
 
 
     updateStatus();
@@ -666,53 +1761,70 @@ function updateUI() {
 }
 
 
-/* =========================
+/* =========================================
    MESSAGGI
-========================= */
-
-function setMessage(text) {
-
-    document.getElementById("status")
-        .textContent = text;
-
-}
-
+========================================= */
 
 function setSpeech(text) {
 
-    document.getElementById("speech")
-        .textContent = text;
+    const speech =
+        document.getElementById(
+            "speech"
+        );
+
+    speech.textContent =
+        text;
+
+    speech.style.animation =
+        "none";
+
+    void speech.offsetWidth;
+
+    speech.style.animation =
+        "speechIn .35s ease";
 
 }
 
 
-/* =========================
+function setStatus(text) {
+
+    document.getElementById(
+        "status"
+    ).textContent =
+        text;
+
+}
+
+
+/* =========================================
    DIARIO
-========================= */
+========================================= */
 
 function addDiary(text) {
 
-    const now =
-        new Date().toLocaleTimeString(
+    const time =
+        new Date()
+        .toLocaleTimeString(
             "it-IT",
             {
-                hour: "2-digit",
-                minute: "2-digit"
+                hour:"2-digit",
+                minute:"2-digit"
             }
         );
 
+
     game.diary.unshift({
-        time: now,
+
+        time: time,
+
         text: text
+
     });
 
-    /*
-       Manteniamo solo gli ultimi
-       20 eventi.
-    */
 
     game.diary =
-        game.diary.slice(0, 20);
+        game.diary.slice(0,20);
+
 
     saveGame();
 
@@ -724,58 +1836,180 @@ function addDiary(text) {
 function renderDiary() {
 
     const container =
-        document.getElementById("diaryEntries");
+        document.getElementById(
+            "diaryEntries"
+        );
+
 
     container.innerHTML = "";
 
-    game.diary.forEach(entry => {
 
-        const div =
-            document.createElement("div");
+    game.diary.forEach(
+        entry => {
 
-        div.className = "entry";
+            const div =
+                document.createElement(
+                    "div"
+                );
 
-        div.innerHTML = `
-            <div class="entry-time">
-                ${entry.time}
-            </div>
-            <div>
-                ${entry.text}
-            </div>
-        `;
 
-        container.appendChild(div);
+            div.className =
+                "entry";
 
-    });
+
+            div.innerHTML = `
+
+                <div class="entry-time">
+                    ${entry.time}
+                </div>
+
+                <div>
+                    ${entry.text}
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                div
+            );
+
+        }
+    );
 
 }
 
 
-/* =========================
+function toggleDiary() {
+
+    document
+        .getElementById("diary")
+        .classList.toggle(
+            "visible"
+        );
+
+}
+
+
+/* =========================================
+   EFFETTI
+========================================= */
+
+function effect(symbol) {
+
+    const room =
+        document.getElementById(
+            "room"
+        );
+
+
+    const el =
+        document.createElement(
+            "div"
+        );
+
+
+    el.className =
+        "effect";
+
+
+    el.textContent =
+        symbol;
+
+
+    el.style.left =
+        (45 + Math.random()*10)
+        + "%";
+
+
+    el.style.top =
+        "43%";
+
+
+    room.appendChild(el);
+
+
+    setTimeout(
+        () => el.remove(),
+        1000
+    );
+
+}
+
+
+/* =========================================
+   ANIMAZIONE SANDRINA
+========================================= */
+
+function animateSandrina(type) {
+
+    const pet =
+        document.getElementById(
+            "sandrine"
+        );
+
+
+    pet.className =
+        "sandrine " + type;
+
+
+    setTimeout(
+        () => {
+
+            pet.className =
+                "sandrine";
+
+        },
+        1200
+    );
+
+}
+
+
+/* =========================================
    CIBO
-========================= */
+========================================= */
 
 function feed() {
 
     game.hunger =
-        Math.min(100, game.hunger + 18);
+        Math.min(
+            100,
+            game.hunger + 18
+        );
+
 
     game.happiness =
-        Math.min(100, game.happiness + 3);
+        Math.min(
+            100,
+            game.happiness + 3
+        );
 
 
-    setSpeech("Gnam gnam! 😋");
+    setSpeech(
+        "Gnam gnam! 😋"
+    );
 
-    setMessage(
+
+    setStatus(
         "🍎 Sandrina ha mangiato!"
     );
 
 
-    animateSandrina("happy");
+    animateSandrina(
+        "happy"
+    );
+
+
+    effect("🍎");
+
+    effect("✨");
+
 
     addDiary(
-        "🍎 Sandrina ha mangiato qualcosa."
+        "🍎 Sandrina ha mangiato."
     );
+
 
     saveGame();
 
@@ -784,18 +2018,20 @@ function feed() {
 }
 
 
-/* =========================
+/* =========================================
    GIOCO
-========================= */
+========================================= */
 
 function play() {
 
-    if (game.energy < 10) {
+    if(game.energy < 10) {
 
-        setSpeech("Sono stanchina... 🥱");
+        setSpeech(
+            "Sono stanchina... 🥱"
+        );
 
-        setMessage(
-            "Sandrina è troppo stanca per giocare."
+        setStatus(
+            "💤 Sandrina è troppo stanca."
         );
 
         return;
@@ -804,25 +2040,44 @@ function play() {
 
 
     game.happiness =
-        Math.min(100, game.happiness + 16);
+        Math.min(
+            100,
+            game.happiness + 16
+        );
+
 
     game.energy =
-        Math.max(0, game.energy - 10);
+        Math.max(
+            0,
+            game.energy - 10
+        );
 
 
-    setSpeech("Prendimi! 😂");
+    setSpeech(
+        "Prendimi! 😂"
+    );
 
-    setMessage(
+
+    setStatus(
         "🎾 Sandrina vuole giocare ancora!"
     );
 
 
-    animateSandrina("happy");
+    animateSandrina(
+        "happy"
+    );
+
+
+    effect("🎾");
+
+    effect("✨");
+
 
     addDiary(
         "🎾 Avete giocato insieme."
     );
 
+
     saveGame();
 
     updateUI();
@@ -830,31 +2085,50 @@ function play() {
 }
 
 
-/* =========================
+/* =========================================
    COCCOLE
-========================= */
+========================================= */
 
 function cuddle() {
 
     game.happiness =
-        Math.min(100, game.happiness + 12);
+        Math.min(
+            100,
+            game.happiness + 12
+        );
+
 
     game.clean =
-        Math.min(100, game.clean + 1);
+        Math.min(
+            100,
+            game.clean + 1
+        );
 
 
-    setSpeech("Coccoleeee ❤️");
+    setSpeech(
+        "Coccoleeee ❤️"
+    );
 
-    setMessage(
+
+    setStatus(
         "❤️ Sandrina fa le fusa."
     );
 
 
-    animateSandrina("happy");
+    animateSandrina(
+        "cuddle"
+    );
+
+
+    effect("❤️");
+
+    effect("💕");
+
 
     addDiary(
-        "❤️ Sandrina ha ricevuto delle coccole."
+        "❤️ Sandrina ha ricevuto coccole."
     );
+
 
     saveGame();
 
@@ -863,32 +2137,51 @@ function cuddle() {
 }
 
 
-/* =========================
+/* =========================================
    NANNA
-========================= */
+========================================= */
 
 function sleep() {
 
     game.energy =
-        Math.min(100, game.energy + 25);
+        Math.min(
+            100,
+            game.energy + 25
+        );
+
 
     game.happiness =
-        Math.max(0, game.happiness - 2);
+        Math.max(
+            0,
+            game.happiness - 2
+        );
 
 
-    setSpeech("Zzz... 💤");
+    setSpeech(
+        "Zzz... 💤"
+    );
 
-    setMessage(
+
+    setStatus(
         "🌙 Sandrina si è addormentata."
     );
 
 
-    animateSandrina("sleeping");
+    animateSandrina(
+        "sleep"
+    );
+
+
+    effect("💤");
+
+    effect("🌙");
+
 
     addDiary(
         "🌙 Sandrina è andata a dormire."
     );
 
+
     saveGame();
 
     updateUI();
@@ -896,29 +2189,42 @@ function sleep() {
 }
 
 
-/* =========================
+/* =========================================
    CAREZZA
-========================= */
+========================================= */
 
 function petSandrina() {
 
     game.happiness =
-        Math.min(100, game.happiness + 5);
+        Math.min(
+            100,
+            game.happiness + 5
+        );
 
 
-    setSpeech("Ehehe! ❤️");
+    setSpeech(
+        "Ehehe! ❤️"
+    );
 
-    setMessage(
+
+    setStatus(
         "🐾 Hai accarezzato Sandrina."
     );
 
 
-    animateSandrina("happy");
+    animateSandrina(
+        "cuddle"
+    );
+
+
+    effect("❤️");
+
 
     addDiary(
         "❤️ Hai accarezzato Sandrina."
     );
 
+
     saveGame();
 
     updateUI();
@@ -926,150 +2232,146 @@ function petSandrina() {
 }
 
 
-/* =========================
-   ANIMAZIONE TEMPORANEA
-========================= */
-
-function animateSandrina(type) {
-
-    const pet =
-        document.getElementById("sandrine");
-
-    pet.className =
-        "sandrine " + type;
-
-    setTimeout(() => {
-
-        pet.className =
-            "sandrine";
-
-    }, 1600);
-
-}
-
-
-/* =========================
-   STATO DI SANDRINA
-========================= */
+/* =========================================
+   STATO
+========================================= */
 
 function updateStatus() {
 
-    let text = "";
+    let text;
 
-    if (game.hunger < 20) {
 
-        text =
-            "🍎 Sandrina ha TANTISSIMA fame.";
-
-    } else if (game.energy < 20) {
+    if(game.hunger < 20) {
 
         text =
-            "💤 Sandrina sta crollando dal sonno.";
+            "🍎 Sandrina ha tantissima fame.";
 
-    } else if (game.clean < 20) {
-
-        text =
-            "💧 Sandrina avrebbe bisogno di una pulita.";
-
-    } else if (game.happiness < 30) {
-
-        text =
-            "🥺 Sandrina vuole un po' di attenzioni.";
-
-    } else if (game.happiness > 85) {
-
-        text =
-            "✨ Sandrina è felicissima oggi!";
-
-    } else {
-
-        text =
-            "🐾 Sandrina sta bene e gironzola.";
     }
 
-    document.getElementById("status")
-        .textContent = text;
+    else if(game.energy < 20) {
+
+        text =
+            "💤 Sandrina sta crollando.";
+
+    }
+
+    else if(game.clean < 20) {
+
+        text =
+            "💧 Sandrina non è proprio pulitissima.";
+
+    }
+
+    else if(game.happiness < 30) {
+
+        text =
+            "🥺 Sandrina vuole attenzioni.";
+
+    }
+
+    else if(game.happiness > 85) {
+
+        text =
+            "✨ Sandrina è felicissima!";
+
+    }
+
+    else {
+
+        text =
+            "🐾 Sandrina sta bene.";
+
+    }
+
+
+    setStatus(text);
 
 }
 
 
-/* =========================
-   DIARIO APRI/CHIUDI
-========================= */
-
-function toggleDiary() {
-
-    const diary =
-        document.getElementById("diary");
-
-    diary.classList.toggle("visible");
-
-}
-
-
-/* =========================
-   STATO
-========================= */
-
-function showStatus() {
-
-    updateStatus();
-
-    setSpeech(
-        "Mmm... fammi controllare... 👀"
-    );
-
-}
-
-
-/* =========================
+/* =========================================
    EVENTI CASUALI
-========================= */
+========================================= */
 
 const randomEvents = [
 
     {
-        text: "🌿 Sandrina ha trovato una foglia interessante.",
-        diary: "🌿 Sandrina ha trovato una foglia interessante.",
+        speech:
+            "Ho trovato una foglia! 🌿",
+
+        status:
+            "🌿 Sandrina sta studiando una foglia.",
+
+        diary:
+            "🌿 Sandrina ha trovato una foglia.",
+
         effect: () => {
+
             game.happiness =
-                Math.min(100, game.happiness + 5);
+                Math.min(
+                    100,
+                    game.happiness + 4
+                );
+
         }
     },
 
+
     {
-        text: "📦 Sandrina si è nascosta nella scatola.",
-        diary: "📦 Sandrina si è nascosta nella scatola.",
+        speech:
+            "Non mi trovi! 👀",
+
+        status:
+            "📦 Sandrina si è nascosta.",
+
+        diary:
+            "📦 Sandrina si è nascosta nella sua tana.",
+
         effect: () => {}
+
     },
 
+
     {
-        text: "🍪 Sandrina ha trovato qualcosa che non doveva mangiare.",
-        diary: "🍪 Sandrina ha rubato un biscotto.",
+        speech:
+            "Ops... era commestibile? 🍪",
+
+        status:
+            "🍪 Sandrina ha rubato qualcosa.",
+
+        diary:
+            "🍪 Sandrina ha rubato un biscotto.",
+
         effect: () => {
+
             game.hunger =
-                Math.min(100, game.hunger + 4);
+                Math.min(
+                    100,
+                    game.hunger + 4
+                );
+
         }
     },
 
-    {
-        text: "👀 Sandrina vi stava osservando da un angolino.",
-        diary: "👀 Sandrina vi stava osservando da un angolino.",
-        effect: () => {
-            game.happiness =
-                Math.min(100, game.happiness + 3);
-        }
-    },
 
     {
-        text: "🎾 Sandrina ha giocato da sola.",
-        diary: "🎾 Sandrina ha giocato da sola.",
-        effect: () => {
-            game.happiness =
-                Math.min(100, game.happiness + 4);
+        speech:
+            "Guardami! 👀",
 
-            game.energy =
-                Math.max(0, game.energy - 3);
+        status:
+            "👀 Sandrina vuole attirare la vostra attenzione.",
+
+        diary:
+            "👀 Sandrina ha chiesto attenzioni.",
+
+        effect: () => {
+
+            game.happiness =
+                Math.min(
+                    100,
+                    game.happiness + 3
+                );
+
         }
     }
 
@@ -1079,28 +2381,45 @@ const randomEvents = [
 function randomEvent() {
 
     /*
-       20% di probabilità ogni controllo.
+       Solo 5% ad ogni controllo.
+       Il controllo avviene ogni 2 minuti.
     */
 
-    if (Math.random() > 0.20) {
+    if(
+        Math.random() > .05
+    ) {
+
         return;
+
     }
+
 
     const event =
         randomEvents[
             Math.floor(
-                Math.random() *
-                randomEvents.length
+                Math.random()
+                * randomEvents.length
             )
         ];
 
+
     event.effect();
 
-    setMessage(event.text);
 
-    setSpeech("Ho fatto una cosa! 👀");
+    setSpeech(
+        event.speech
+    );
 
-    addDiary(event.diary);
+
+    setStatus(
+        event.status
+    );
+
+
+    addDiary(
+        event.diary
+    );
+
 
     saveGame();
 
@@ -1109,19 +2428,22 @@ function randomEvent() {
 }
 
 
-/* =========================
+/* =========================================
    RESET
-========================= */
+========================================= */
 
 function resetGame() {
 
-    const confirmReset =
+    const answer =
         confirm(
-            "Sei sicuro di voler ricominciare? Sandrina perderà tutti i suoi progressi."
+            "Vuoi davvero ricominciare? Sandrina perderà tutti i progressi."
         );
 
-    if (!confirmReset) {
+
+    if(!answer) {
+
         return;
+
     }
 
 
@@ -1129,36 +2451,78 @@ function resetGame() {
         "petaurino"
     );
 
+
     location.reload();
 
 }
 
 
-/* =========================
+/* =========================================
+   IMMAGINE SANDRINA
+========================================= */
+
+const sandrinaImage =
+    document.getElementById(
+        "sandrineImage"
+    );
+
+
+sandrinaImage.onload =
+    function() {
+
+        document.getElementById(
+            "placeholder"
+        ).style.display =
+            "none";
+
+
+        sandrinaImage.style.display =
+            "block";
+
+    };
+
+
+/* =========================================
    AVVIO
-========================= */
+========================================= */
 
 updateTime();
 
 updateUI();
 
-randomEvent();
-
 
 /*
-   Controlliamo periodicamente
-   lo stato di Sandrina.
+   Evento casuale solo all'apertura.
 */
 
-setInterval(() => {
-
-    updateTime();
-
-    updateUI();
+if(
+    Math.random() < .15
+) {
 
     randomEvent();
 
-}, 60000);
+}
+
+
+/*
+   Aggiornamento ogni 2 minuti.
+*/
+
+setInterval(
+
+    () => {
+
+        updateTime();
+
+        updateUI();
+
+        randomEvent();
+
+    },
+
+    120000
+
+);
 
 </script>
 
