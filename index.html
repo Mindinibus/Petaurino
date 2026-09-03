@@ -1,194 +1,387 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Petaurino 🐾</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<title>Petaurino</title>
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            background: #f7ead8;
-            color: #4b3828;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-        }
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        .app {
-            width: 100%;
-            max-width: 430px;
-            min-height: 100vh;
-            background: #fff8ed;
-            padding: 24px 18px;
-        }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    background: #eadbc7;
+    color: #49382a;
+    min-height: 100vh;
+}
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-        }
+button {
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+}
 
-        .title {
-            font-size: 28px;
-            font-weight: 800;
-        }
+.app {
+    width: 100%;
+    max-width: 440px;
+    min-height: 100vh;
+    margin: auto;
+    background: #fff8ed;
+    padding: 20px 16px 30px;
+}
 
-        .subtitle {
-            color: #9b8065;
-            font-size: 14px;
-            margin-top: 3px;
-        }
+/* HEADER */
 
-        .heart {
-            background: #ffd9df;
-            padding: 10px 14px;
-            border-radius: 20px;
-            font-weight: 700;
-        }
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
 
-        .room {
-            height: 420px;
-            border-radius: 28px;
-            background: linear-gradient(
-                145deg,
-                #d9e8c5,
-                #b7d29e
-            );
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(80, 60, 30, 0.15);
-            margin-bottom: 20px;
-        }
+.title {
+    font-size: 29px;
+    font-weight: 800;
+}
 
-        .branch {
-            position: absolute;
-            width: 80%;
-            height: 28px;
-            background: #806044;
-            border-radius: 20px;
-            transform: rotate(-12deg);
-            left: 10%;
-            top: 28%;
-        }
+.subtitle {
+    color: #a08770;
+    font-size: 13px;
+    margin-top: 3px;
+}
 
-        .branch.two {
-            transform: rotate(15deg);
-            top: 55%;
-            width: 60%;
-            left: 35%;
-        }
+.level {
+    background: #ffe0e3;
+    padding: 9px 13px;
+    border-radius: 18px;
+    font-weight: 700;
+    color: #bd6473;
+}
 
-        .leaf {
-            position: absolute;
-            font-size: 42px;
-        }
+/* STANZA */
 
-        .leaf.one { top: 10%; left: 8%; }
-        .leaf.two { top: 18%; right: 8%; }
-        .leaf.three { bottom: 12%; left: 10%; }
-        .leaf.four { bottom: 8%; right: 12%; }
+.room {
+    height: 400px;
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 20% 15%, #e7efcf 0 5%, transparent 6%),
+        linear-gradient(145deg, #dcebc5, #b6d29c);
+    box-shadow: 0 12px 30px rgba(80, 60, 30, .14);
+}
 
-        .sandrine {
-            position: absolute;
-            left: 50%;
-            top: 47%;
-            transform: translate(-50%, -50%);
-            font-size: 110px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            user-select: none;
-        }
+/* decorazioni */
 
-        .sandrine:active {
-            transform: translate(-50%, -50%) scale(0.9);
-        }
+.branch {
+    position: absolute;
+    height: 25px;
+    background: #7b5c43;
+    border-radius: 20px;
+    transform: rotate(-12deg);
+}
 
-        .speech {
-            position: absolute;
-            background: white;
-            padding: 10px 15px;
-            border-radius: 18px;
-            top: 12%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            white-space: nowrap;
-        }
+.branch.one {
+    width: 80%;
+    left: 10%;
+    top: 30%;
+}
 
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 18px;
-        }
+.branch.two {
+    width: 62%;
+    right: -5%;
+    top: 58%;
+    transform: rotate(16deg);
+}
 
-        .stat {
-            background: white;
-            border-radius: 18px;
-            padding: 12px;
-            box-shadow: 0 4px 12px rgba(80,60,30,0.07);
-        }
+.leaf {
+    position: absolute;
+    font-size: 38px;
+}
 
-        .stat-name {
-            font-size: 12px;
-            color: #947c65;
-            margin-bottom: 6px;
-        }
+.leaf.one {
+    left: 7%;
+    top: 8%;
+}
 
-        .bar {
-            height: 9px;
-            background: #eee5da;
-            border-radius: 10px;
-            overflow: hidden;
-        }
+.leaf.two {
+    right: 8%;
+    top: 16%;
+}
 
-        .fill {
-            height: 100%;
-            width: 80%;
-            border-radius: 10px;
-            background: #f3a65c;
-        }
+.leaf.three {
+    left: 8%;
+    bottom: 10%;
+}
 
-        .actions {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
+.leaf.four {
+    right: 12%;
+    bottom: 8%;
+}
 
-        button {
-            border: none;
-            border-radius: 18px;
-            padding: 13px 5px;
-            font-size: 13px;
-            font-weight: 700;
-            color: white;
-            cursor: pointer;
-        }
+.hideout {
+    position: absolute;
+    right: 12%;
+    bottom: 14%;
+    width: 75px;
+    height: 65px;
+    background: #8d694b;
+    border-radius: 15px 15px 25px 25px;
+}
 
-        .food { background: #e89a45; }
-        .play { background: #75b56b; }
-        .love { background: #e88496; }
-        .sleep { background: #7188c7; }
+.hideout::after {
+    content: "";
+    position: absolute;
+    width: 27px;
+    height: 30px;
+    background: #473427;
+    border-radius: 50% 50% 0 0;
+    left: 24px;
+    bottom: 0;
+}
 
-        .message {
-            text-align: center;
-            min-height: 24px;
-            margin-top: 15px;
-            color: #806b55;
-            font-size: 14px;
-            font-weight: 600;
-        }
-    </style>
+/* SANDRINA */
+
+.sandrine {
+    position: absolute;
+    left: 50%;
+    top: 47%;
+    transform: translate(-50%, -50%);
+    font-size: 105px;
+    user-select: none;
+    transition: .25s ease;
+    z-index: 5;
+}
+
+.sandrine.happy {
+    transform: translate(-50%, -50%) scale(1.08) rotate(-3deg);
+}
+
+.sandrine.sleeping {
+    transform: translate(-50%, -50%) scale(.9);
+    opacity: .9;
+}
+
+.sandrine.sad {
+    transform: translate(-50%, -50%) scale(.94);
+}
+
+.speech {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 10px 15px;
+    border-radius: 18px;
+    font-size: 14px;
+    font-weight: 650;
+    white-space: nowrap;
+    box-shadow: 0 5px 16px rgba(0,0,0,.1);
+    z-index: 10;
+}
+
+/* STATO */
+
+.status {
+    text-align: center;
+    padding: 14px 0 8px;
+    color: #806b55;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+/* STATISTICHE */
+
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.stat {
+    background: white;
+    border-radius: 18px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(80,60,30,.06);
+}
+
+.stat-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7px;
+}
+
+.stat-name {
+    color: #927d68;
+    font-size: 12px;
+}
+
+.stat-number {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.bar {
+    height: 9px;
+    background: #eee5da;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    width: 80%;
+    border-radius: 10px;
+    transition: width .4s ease;
+}
+
+.hunger {
+    background: #eca44d;
+}
+
+.happiness {
+    background: #e98799;
+}
+
+.energy {
+    background: #e7bd55;
+}
+
+.clean {
+    background: #72b8d0;
+}
+
+/* AZIONI */
+
+.actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.action {
+    padding: 13px 4px 11px;
+    border-radius: 18px;
+    color: white;
+    font-weight: 750;
+    font-size: 12px;
+    transition: transform .12s;
+}
+
+.action:active {
+    transform: scale(.94);
+}
+
+.action-icon {
+    font-size: 23px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.food {
+    background: #e99b43;
+}
+
+.play {
+    background: #72b367;
+}
+
+.love {
+    background: #df8294;
+}
+
+.sleep {
+    background: #7287c5;
+}
+
+/* MENU */
+
+.menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 12px;
+}
+
+.menu button {
+    background: #f1e6d7;
+    color: #806b55;
+    padding: 12px;
+    border-radius: 16px;
+    font-weight: 700;
+}
+
+/* DIARIO */
+
+.diary {
+    display: none;
+    margin-top: 15px;
+    background: white;
+    border-radius: 22px;
+    padding: 16px;
+    box-shadow: 0 5px 15px rgba(80,60,30,.07);
+}
+
+.diary.visible {
+    display: block;
+}
+
+.diary-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.entry {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee5da;
+    font-size: 13px;
+}
+
+.entry:last-child {
+    border-bottom: none;
+}
+
+.entry-time {
+    color: #ae9880;
+    font-size: 11px;
+    margin-bottom: 3px;
+}
+
+/* RESET */
+
+.reset {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.reset button {
+    background: transparent;
+    color: #b19b84;
+    font-size: 11px;
+}
+
+/* DESKTOP */
+
+@media (min-width: 600px) {
+    body {
+        padding: 20px;
+    }
+
+    .app {
+        border-radius: 30px;
+        min-height: auto;
+    }
+}
+</style>
 </head>
 
 <body>
@@ -196,12 +389,16 @@
 <div class="app">
 
     <div class="header">
+
         <div>
             <div class="title">🐾 Sandrina</div>
             <div class="subtitle">Il vostro piccolo mondo</div>
         </div>
 
-        <div class="heart">❤️ 90</div>
+        <div class="level">
+            Lv. 1
+        </div>
+
     </div>
 
     <div class="room">
@@ -211,46 +408,68 @@
         <div class="leaf three">🌿</div>
         <div class="leaf four">🌿</div>
 
-        <div class="branch"></div>
+        <div class="branch one"></div>
         <div class="branch two"></div>
+
+        <div class="hideout"></div>
 
         <div class="speech" id="speech">
             Ehi! Mi cercavi? 👀
         </div>
 
-        <div class="sandrine" onclick="petSandrine()">
+        <div class="sandrine" id="sandrine" onclick="petSandrina()">
             🐿️
         </div>
 
     </div>
 
+    <div class="status" id="status">
+        Sandrina sta aspettando voi 🐾
+    </div>
+
     <div class="stats">
 
         <div class="stat">
-            <div class="stat-name">🍎 Fame</div>
+            <div class="stat-top">
+                <span class="stat-name">🍎 Fame</span>
+                <span class="stat-number" id="hungerNumber">80</span>
+            </div>
+
             <div class="bar">
-                <div class="fill" id="hunger" style="width: 80%;"></div>
+                <div class="fill hunger" id="hungerBar"></div>
             </div>
         </div>
 
         <div class="stat">
-            <div class="stat-name">❤️ Felicità</div>
+            <div class="stat-top">
+                <span class="stat-name">❤️ Felicità</span>
+                <span class="stat-number" id="happinessNumber">90</span>
+            </div>
+
             <div class="bar">
-                <div class="fill" id="happiness" style="width: 90%;"></div>
+                <div class="fill happiness" id="happinessBar"></div>
             </div>
         </div>
 
         <div class="stat">
-            <div class="stat-name">⚡ Energia</div>
+            <div class="stat-top">
+                <span class="stat-name">⚡ Energia</span>
+                <span class="stat-number" id="energyNumber">70</span>
+            </div>
+
             <div class="bar">
-                <div class="fill" id="energy" style="width: 70%;"></div>
+                <div class="fill energy" id="energyBar"></div>
             </div>
         </div>
 
         <div class="stat">
-            <div class="stat-name">💧 Pulizia</div>
+            <div class="stat-top">
+                <span class="stat-name">💧 Pulizia</span>
+                <span class="stat-number" id="cleanNumber">85</span>
+            </div>
+
             <div class="bar">
-                <div class="fill" id="clean"></div>
+                <div class="fill clean" id="cleanBar"></div>
             </div>
         </div>
 
@@ -258,97 +477,688 @@
 
     <div class="actions">
 
-        <button class="food" onclick="feed()">
-            🍎<br>CIBO
+        <button class="action food" onclick="feed()">
+            <span class="action-icon">🍎</span>
+            CIBO
         </button>
 
-        <button class="play" onclick="play()">
-            🎾<br>GIOCA
+        <button class="action play" onclick="play()">
+            <span class="action-icon">🎾</span>
+            GIOCA
         </button>
 
-        <button class="love" onclick="cuddle()">
-            ❤️<br>COCCOLE
+        <button class="action love" onclick="cuddle()">
+            <span class="action-icon">❤️</span>
+            COCCOLE
         </button>
 
-        <button class="sleep" onclick="sleep()">
-            🌙<br>NANNA
+        <button class="action sleep" onclick="sleep()">
+            <span class="action-icon">🌙</span>
+            NANNA
         </button>
 
     </div>
 
-    <div class="message" id="message">
-        Sandrina sta aspettando voi 🐾
+    <div class="menu">
+
+        <button onclick="toggleDiary()">
+            📖 Diario
+        </button>
+
+        <button onclick="showStatus()">
+            🐾 Come sta?
+        </button>
+
+    </div>
+
+    <div class="diary" id="diary">
+
+        <div class="diary-title">
+            📖 Diario di Sandrina
+        </div>
+
+        <div id="diaryEntries"></div>
+
+    </div>
+
+    <div class="reset">
+        <button onclick="resetGame()">
+            Ricomincia da capo
+        </button>
     </div>
 
 </div>
 
+
 <script>
 
-    let hunger = 80;
-    let happiness = 90;
-    let energy = 70;
-    let clean = 85;
+/* =========================
+   DATI DEL GIOCO
+========================= */
 
-    function updateBars() {
-        document.getElementById("hunger").style.width = hunger + "%";
-        document.getElementById("happiness").style.width = happiness + "%";
-        document.getElementById("energy").style.width = energy + "%";
-        document.getElementById("clean").style.width = clean + "%";
+let game = JSON.parse(localStorage.getItem("petaurino")) || {
+
+    hunger: 80,
+    happiness: 90,
+    energy: 70,
+    clean: 85,
+
+    lastUpdate: Date.now(),
+
+    diary: [
+        {
+            time: new Date().toLocaleTimeString("it-IT", {
+                hour: "2-digit",
+                minute: "2-digit"
+            }),
+            text: "🐾 Sandrina è arrivata!"
+        }
+    ]
+
+};
+
+
+/* =========================
+   SALVATAGGIO
+========================= */
+
+function saveGame() {
+
+    game.lastUpdate = Date.now();
+
+    localStorage.setItem(
+        "petaurino",
+        JSON.stringify(game)
+    );
+
+}
+
+
+/* =========================
+   PASSAGGIO DEL TEMPO
+========================= */
+
+function updateTime() {
+
+    const now = Date.now();
+
+    const elapsed =
+        (now - game.lastUpdate) / 60000;
+
+    /*
+       Ogni 10 minuti:
+       Fame -1
+       Felicità -0.5
+       Energia -0.5
+       Pulizia -1
+    */
+
+    const units = elapsed / 10;
+
+    game.hunger =
+        Math.max(0, game.hunger - units);
+
+    game.happiness =
+        Math.max(0, game.happiness - units * 0.5);
+
+    game.energy =
+        Math.max(0, game.energy - units * 0.5);
+
+    game.clean =
+        Math.max(0, game.clean - units);
+
+    game.lastUpdate = now;
+
+    saveGame();
+
+}
+
+
+/* =========================
+   AGGIORNA INTERFACCIA
+========================= */
+
+function updateUI() {
+
+    const hunger =
+        Math.round(game.hunger);
+
+    const happiness =
+        Math.round(game.happiness);
+
+    const energy =
+        Math.round(game.energy);
+
+    const clean =
+        Math.round(game.clean);
+
+
+    document.getElementById("hungerBar").style.width =
+        hunger + "%";
+
+    document.getElementById("happinessBar").style.width =
+        happiness + "%";
+
+    document.getElementById("energyBar").style.width =
+        energy + "%";
+
+    document.getElementById("cleanBar").style.width =
+        clean + "%";
+
+
+    document.getElementById("hungerNumber").textContent =
+        hunger;
+
+    document.getElementById("happinessNumber").textContent =
+        happiness;
+
+    document.getElementById("energyNumber").textContent =
+        energy;
+
+    document.getElementById("cleanNumber").textContent =
+        clean;
+
+
+    updateStatus();
+
+    renderDiary();
+
+}
+
+
+/* =========================
+   MESSAGGI
+========================= */
+
+function setMessage(text) {
+
+    document.getElementById("status")
+        .textContent = text;
+
+}
+
+
+function setSpeech(text) {
+
+    document.getElementById("speech")
+        .textContent = text;
+
+}
+
+
+/* =========================
+   DIARIO
+========================= */
+
+function addDiary(text) {
+
+    const now =
+        new Date().toLocaleTimeString(
+            "it-IT",
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    game.diary.unshift({
+        time: now,
+        text: text
+    });
+
+    /*
+       Manteniamo solo gli ultimi
+       20 eventi.
+    */
+
+    game.diary =
+        game.diary.slice(0, 20);
+
+    saveGame();
+
+    renderDiary();
+
+}
+
+
+function renderDiary() {
+
+    const container =
+        document.getElementById("diaryEntries");
+
+    container.innerHTML = "";
+
+    game.diary.forEach(entry => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "entry";
+
+        div.innerHTML = `
+            <div class="entry-time">
+                ${entry.time}
+            </div>
+            <div>
+                ${entry.text}
+            </div>
+        `;
+
+        container.appendChild(div);
+
+    });
+
+}
+
+
+/* =========================
+   CIBO
+========================= */
+
+function feed() {
+
+    game.hunger =
+        Math.min(100, game.hunger + 18);
+
+    game.happiness =
+        Math.min(100, game.happiness + 3);
+
+
+    setSpeech("Gnam gnam! 😋");
+
+    setMessage(
+        "🍎 Sandrina ha mangiato!"
+    );
+
+
+    animateSandrina("happy");
+
+    addDiary(
+        "🍎 Sandrina ha mangiato qualcosa."
+    );
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+/* =========================
+   GIOCO
+========================= */
+
+function play() {
+
+    if (game.energy < 10) {
+
+        setSpeech("Sono stanchina... 🥱");
+
+        setMessage(
+            "Sandrina è troppo stanca per giocare."
+        );
+
+        return;
+
     }
 
-    function message(text) {
-        document.getElementById("message").textContent = text;
+
+    game.happiness =
+        Math.min(100, game.happiness + 16);
+
+    game.energy =
+        Math.max(0, game.energy - 10);
+
+
+    setSpeech("Prendimi! 😂");
+
+    setMessage(
+        "🎾 Sandrina vuole giocare ancora!"
+    );
+
+
+    animateSandrina("happy");
+
+    addDiary(
+        "🎾 Avete giocato insieme."
+    );
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+/* =========================
+   COCCOLE
+========================= */
+
+function cuddle() {
+
+    game.happiness =
+        Math.min(100, game.happiness + 12);
+
+    game.clean =
+        Math.min(100, game.clean + 1);
+
+
+    setSpeech("Coccoleeee ❤️");
+
+    setMessage(
+        "❤️ Sandrina fa le fusa."
+    );
+
+
+    animateSandrina("happy");
+
+    addDiary(
+        "❤️ Sandrina ha ricevuto delle coccole."
+    );
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+/* =========================
+   NANNA
+========================= */
+
+function sleep() {
+
+    game.energy =
+        Math.min(100, game.energy + 25);
+
+    game.happiness =
+        Math.max(0, game.happiness - 2);
+
+
+    setSpeech("Zzz... 💤");
+
+    setMessage(
+        "🌙 Sandrina si è addormentata."
+    );
+
+
+    animateSandrina("sleeping");
+
+    addDiary(
+        "🌙 Sandrina è andata a dormire."
+    );
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+/* =========================
+   CAREZZA
+========================= */
+
+function petSandrina() {
+
+    game.happiness =
+        Math.min(100, game.happiness + 5);
+
+
+    setSpeech("Ehehe! ❤️");
+
+    setMessage(
+        "🐾 Hai accarezzato Sandrina."
+    );
+
+
+    animateSandrina("happy");
+
+    addDiary(
+        "❤️ Hai accarezzato Sandrina."
+    );
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+/* =========================
+   ANIMAZIONE TEMPORANEA
+========================= */
+
+function animateSandrina(type) {
+
+    const pet =
+        document.getElementById("sandrine");
+
+    pet.className =
+        "sandrine " + type;
+
+    setTimeout(() => {
+
+        pet.className =
+            "sandrine";
+
+    }, 1600);
+
+}
+
+
+/* =========================
+   STATO DI SANDRINA
+========================= */
+
+function updateStatus() {
+
+    let text = "";
+
+    if (game.hunger < 20) {
+
+        text =
+            "🍎 Sandrina ha TANTISSIMA fame.";
+
+    } else if (game.energy < 20) {
+
+        text =
+            "💤 Sandrina sta crollando dal sonno.";
+
+    } else if (game.clean < 20) {
+
+        text =
+            "💧 Sandrina avrebbe bisogno di una pulita.";
+
+    } else if (game.happiness < 30) {
+
+        text =
+            "🥺 Sandrina vuole un po' di attenzioni.";
+
+    } else if (game.happiness > 85) {
+
+        text =
+            "✨ Sandrina è felicissima oggi!";
+
+    } else {
+
+        text =
+            "🐾 Sandrina sta bene e gironzola.";
     }
 
-    function feed() {
-        hunger = Math.min(100, hunger + 15);
-        happiness = Math.min(100, happiness + 3);
+    document.getElementById("status")
+        .textContent = text;
 
-        message("🍎 Sandrina ha mangiato! Gnam gnam.");
-        document.getElementById("speech").textContent = "Era buonissima! 🤤";
+}
 
-        updateBars();
+
+/* =========================
+   DIARIO APRI/CHIUDI
+========================= */
+
+function toggleDiary() {
+
+    const diary =
+        document.getElementById("diary");
+
+    diary.classList.toggle("visible");
+
+}
+
+
+/* =========================
+   STATO
+========================= */
+
+function showStatus() {
+
+    updateStatus();
+
+    setSpeech(
+        "Mmm... fammi controllare... 👀"
+    );
+
+}
+
+
+/* =========================
+   EVENTI CASUALI
+========================= */
+
+const randomEvents = [
+
+    {
+        text: "🌿 Sandrina ha trovato una foglia interessante.",
+        diary: "🌿 Sandrina ha trovato una foglia interessante.",
+        effect: () => {
+            game.happiness =
+                Math.min(100, game.happiness + 5);
+        }
+    },
+
+    {
+        text: "📦 Sandrina si è nascosta nella scatola.",
+        diary: "📦 Sandrina si è nascosta nella scatola.",
+        effect: () => {}
+    },
+
+    {
+        text: "🍪 Sandrina ha trovato qualcosa che non doveva mangiare.",
+        diary: "🍪 Sandrina ha rubato un biscotto.",
+        effect: () => {
+            game.hunger =
+                Math.min(100, game.hunger + 4);
+        }
+    },
+
+    {
+        text: "👀 Sandrina vi stava osservando da un angolino.",
+        diary: "👀 Sandrina vi stava osservando da un angolino.",
+        effect: () => {
+            game.happiness =
+                Math.min(100, game.happiness + 3);
+        }
+    },
+
+    {
+        text: "🎾 Sandrina ha giocato da sola.",
+        diary: "🎾 Sandrina ha giocato da sola.",
+        effect: () => {
+            game.happiness =
+                Math.min(100, game.happiness + 4);
+
+            game.energy =
+                Math.max(0, game.energy - 3);
+        }
     }
 
-    function play() {
-        happiness = Math.min(100, happiness + 15);
-        energy = Math.max(0, energy - 10);
+];
 
-        message("🎾 Sandrina vuole giocare ancora!");
-        document.getElementById("speech").textContent = "Prendimi! 😂";
 
-        updateBars();
+function randomEvent() {
+
+    /*
+       20% di probabilità ogni controllo.
+    */
+
+    if (Math.random() > 0.20) {
+        return;
     }
 
-    function cuddle() {
-        happiness = Math.min(100, happiness + 10);
+    const event =
+        randomEvents[
+            Math.floor(
+                Math.random() *
+                randomEvents.length
+            )
+        ];
 
-        message("❤️ Sandrina fa le fusa.");
-        document.getElementById("speech").textContent = "Coccoleeee 🥹";
+    event.effect();
 
-        updateBars();
+    setMessage(event.text);
+
+    setSpeech("Ho fatto una cosa! 👀");
+
+    addDiary(event.diary);
+
+    saveGame();
+
+    updateUI();
+
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+function resetGame() {
+
+    const confirmReset =
+        confirm(
+            "Sei sicuro di voler ricominciare? Sandrina perderà tutti i suoi progressi."
+        );
+
+    if (!confirmReset) {
+        return;
     }
 
-    function sleep() {
-        energy = Math.min(100, energy + 25);
-        happiness = Math.max(0, happiness - 2);
 
-        message("🌙 Sandrina si è addormentata...");
-        document.getElementById("speech").textContent = "Zzz... 💤";
+    localStorage.removeItem(
+        "petaurino"
+    );
 
-        updateBars();
-    }
+    location.reload();
 
-    function petSandrine() {
-        happiness = Math.min(100, happiness + 5);
+}
 
-        message("❤️ Hai accarezzato Sandrina.");
-        document.getElementById("speech").textContent = "Ehehe! ❤️";
 
-        updateBars();
-    }
+/* =========================
+   AVVIO
+========================= */
 
-    updateBars();
+updateTime();
+
+updateUI();
+
+randomEvent();
+
+
+/*
+   Controlliamo periodicamente
+   lo stato di Sandrina.
+*/
+
+setInterval(() => {
+
+    updateTime();
+
+    updateUI();
+
+    randomEvent();
+
+}, 60000);
 
 </script>
 
