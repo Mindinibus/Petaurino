@@ -2481,6 +2481,154 @@ sandrinaImage.onload =
 
     };
 
+/* =========================================
+   MOVIMENTO AUTONOMO DI SANDRINA
+========================================= */
+
+let sandrinaMoving = false;
+let sandrinaTimeout = null;
+
+function moveSandrina() {
+
+    const room =
+        document.getElementById("room");
+
+    const sandrina =
+        document.getElementById("sandrine");
+
+    if (sandrinaMoving) {
+        return;
+    }
+
+    sandrinaMoving = true;
+
+    /*
+       Dimensioni della stanza
+    */
+
+    const roomWidth =
+        room.clientWidth;
+
+    const roomHeight =
+        room.clientHeight;
+
+
+    /*
+       Dimensioni di Sandrina.
+       Lasciamo un margine per evitare
+       che finisca fuori dalla stanza.
+    */
+
+    const marginX = 80;
+    const marginTop = 80;
+    const marginBottom = 100;
+
+
+    /*
+       Posizione casuale.
+    */
+
+    const x =
+        marginX +
+        Math.random() *
+        (roomWidth - marginX * 2);
+
+
+    const y =
+        marginTop +
+        Math.random() *
+        (roomHeight - marginTop - marginBottom);
+
+
+    /*
+       Direzione casuale.
+       Serve per darle un minimo
+       di personalità mentre si sposta.
+    */
+
+    const direction =
+        Math.random() < .5
+        ? 1
+        : -1;
+
+
+    /*
+       Durata casuale del movimento.
+    */
+
+    const duration =
+        1800 +
+        Math.random() * 2200;
+
+
+    /*
+       Movimento.
+    */
+
+    sandrina.style.transition =
+        `left ${duration}ms ease-in-out,
+         top ${duration}ms ease-in-out,
+         transform .35s ease`;
+
+
+    sandrina.style.left =
+        x + "px";
+
+
+    sandrina.style.top =
+        y + "px";
+
+
+    sandrina.style.transform =
+        `translate(-50%, -50%)
+         scaleX(${direction})`;
+
+
+    /*
+       Quando arriva:
+       si ferma per un po'.
+    */
+
+    sandrinaTimeout =
+        setTimeout(
+            () => {
+
+                sandrinaMoving = false;
+
+                /*
+                   Pausa casuale:
+                   tra 1,5 e 5 secondi.
+                */
+
+                const pause =
+                    1500 +
+                    Math.random() * 3500;
+
+
+                sandrinaTimeout =
+                    setTimeout(
+                        moveSandrina,
+                        pause
+                    );
+
+            },
+            duration
+        );
+
+}
+
+
+/*
+   Primo movimento.
+   Aspettiamo un po' prima di
+   far partire Sandrina.
+*/
+
+setTimeout(
+    moveSandrina,
+    2500
+);
+
 
 /* =========================================
    AVVIO
