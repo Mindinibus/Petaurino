@@ -1545,10 +1545,10 @@ function walkTo(
 
     const duration =
         Math.max(
-            900,
+            1200,
             Math.min(
-                2800,
-                distance * 7
+                4200,
+                distance * (7.5 + Math.random() * 2)
             )
         );
 
@@ -2454,13 +2454,12 @@ sandrine.addEventListener(
 function moveSandrina() {
 
     if (
+        movingToObject ||
         draggingSandrina ||
-        movingToObject
+        onBranch
     ) {
         return;
     }
-
-    stopWalkingAnimation();
 
     const roomWidth =
         room.clientWidth;
@@ -2474,132 +2473,152 @@ function moveSandrina() {
     const sandrinaHeight =
         sandrine.offsetHeight;
 
-    const marginX = 15;
-    const marginY = 30;
+    /*
+       Sandrina esplora una vera "fascia di pavimento".
+       Evitiamo che faccia avanti e indietro di pochi pixel.
+    */
+    const marginX = 12;
 
+    const minX = marginX;
     const maxX =
         roomWidth -
         sandrinaWidth -
         marginX;
 
+    const minY =
+        floorTop() + 8;
+
     const maxY =
         roomHeight -
         sandrinaHeight -
-        marginY;
+        18;
 
-    const x =
-        marginX +
+    let targetX;
+
+    /*
+       Scegli una destinazione abbastanza lontana
+       dalla posizione attuale.
+    */
+    for (let i = 0; i < 10; i++) {
+
+        const candidate =
+            minX +
+            Math.random() *
+            Math.max(1, maxX - minX);
+
+        if (
+            Math.abs(
+                candidate -
+                sandrine.offsetLeft
+            ) > 75
+        ) {
+            targetX = candidate;
+            break;
+        }
+    }
+
+    if (targetX === undefined) {
+        targetX =
+            sandrine.offsetLeft < roomWidth / 2
+                ? maxX
+                : minX;
+    }
+
+    /*
+       Piccole variazioni di profondità,
+       ma sempre dentro il pavimento.
+       Non "vola" più per la stanza.
+    */
+    const targetY =
+        minY +
         Math.random() *
-        Math.max(
-            1,
-            maxX - marginX
+        Math.max(1, maxY - minY);
+
+    /*
+       Ogni tanto Sandrina fa una pausa prima
+       di ripartire, come un animale che si distrae.
+    */
+    if (Math.random() < 0.22) {
+
+        sandrine.className =
+            "sandrine idle";
+
+        sandrineImage.src =
+            "images/sandrina-idle.png";
+
+        setSpeech(
+            randomPhrase("idle")
         );
 
-    const y =
-        marginY +
-        Math.random() *
-        Math.max(
-            1,
-            maxY - marginY
-        );
+        if (floorShadow) {
+            floorShadow.style.opacity = "1";
+        }
 
-    const currentX =
-        sandrine.offsetLeft;
+        updateFloorShadow();
 
-    const currentY =
-        sandrine.offsetTop;
-
-    const direction =
-        x >= currentX ? 1 : -1;
-
-    const distance =
-        Math.sqrt(
-            Math.pow(
-                x - currentX,
-                2
-            ) +
-            Math.pow(
-                y - currentY,
-                2
-            )
-        );
-
-    const duration =
-        Math.max(
-            1400,
-            Math.min(
-                3500,
-                distance * 7
-            )
-        );
-
-    sandrine.className =
-        "sandrine walking";
-
-    sandrine.style.transform =
-        `translate(0,0) scaleX(${direction})`;
-
-    startWalkingAnimation();
-
-    sandrine.style.transition =
-        `left ${duration}ms linear, top ${duration}ms linear`;
-
-    requestAnimationFrame(() => {
-
-        sandrine.style.left =
-            `${x}px`;
-
-        sandrine.style.top =
-            `${y}px`;
-
-    });
-
-    walkingTimeout =
         setTimeout(
             () => {
-
-                stopWalkingAnimation();
-
                 if (
+                    !movingToObject &&
                     !draggingSandrina &&
-                    !movingToObject
+                    !onBranch
                 ) {
+                    walkTo(
+                        targetX,
+                        targetY,
+                        () => {
+                            movingToObject = false;
 
-                    sandrine.className =
-                        "sandrine idle";
+                            sandrine.className =
+                                "sandrine idle";
 
-                    sandrine.style.transition =
-                        "left .15s linear, top .15s linear";
+                            sandrineImage.src =
+                                "images/sandrina-idle.png";
 
-                    sandrineImage.src =
-                        "images/sandrina-idle.png";
+                            updateFloorShadow();
 
-                    if (
-                        Math.random() < .45
-                    ) {
-
-                        setSpeech(
-                            randomPhrase("idle")
-                        );
-
-                    }
-
-                }
-
-                const pause =
-                    1800 +
-                    Math.random() *
-                    4500;
-
-                walkingTimeout =
-                    setTimeout(
-                        moveSandrina,
-                        pause
+                            setTimeout(
+                                moveSandrina,
+                                2600 +
+                                Math.random() * 2600
+                            );
+                        }
                     );
-
+                }
             },
-            duration + 50
+            1400 +
+            Math.random() * 1800
         );
+
+        return;
+    }
+
+    walkTo(
+        targetX,
+        targetY,
+        () => {
+
+            movingToObject = false;
+
+            sandrine.className =
+                "sandrine idle";
+
+            sandrineImage.src =
+                "images/sandrina-idle.png";
+
+            updateFloorShadow();
+
+            /*
+               Pausa naturale dopo ogni tragitto:
+               2.6–5.2 secondi.
+            */
+            setTimeout(
+                moveSandrina,
+                2600 +
+                Math.random() * 2600
+            );
+        }
+    );
 }
 
 
