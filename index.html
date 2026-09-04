@@ -2361,6 +2361,14 @@ function endDrag() {
             },
             600
         );
+        setTimeout(
+    () => {
+        if (!draggingSandrina && !movingToObject) {
+            moveSandrina();
+        }
+    },
+    1800
+);
 
     }
 
