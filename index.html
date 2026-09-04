@@ -105,7 +105,8 @@ header {
     background: #735039;
     transform-origin: left center;
     z-index: 2;
-    pointer-events: none;
+    pointer-events: auto;
+    cursor: pointer;
 }
 
 .branch.one {
@@ -463,14 +464,14 @@ header {
 }
 
 /* =====================================================
-   TEXTURE NATURALE
+   PAVIMENTO + TEXTURA
 ===================================================== */
 
 .room {
     background:
-        radial-gradient(circle at 15% 25%, rgba(255,255,255,.14) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 72% 18%, rgba(60,90,45,.10) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 35% 72%, rgba(255,255,255,.10) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 12% 76%, rgba(255,255,255,.10) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 68% 88%, rgba(45,70,35,.10) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 35% 66%, rgba(255,255,255,.08) 0 1px, transparent 1.5px),
         linear-gradient(
             to bottom,
             #b8d99b 0%,
@@ -478,7 +479,7 @@ header {
             #7eae69 58%,
             #6d985d 100%
         );
-    background-size: 34px 34px, 47px 47px, 61px 61px, 100% 100%;
+    background-size: 38px 38px, 53px 53px, 67px 67px, 100% 100%;
 }
 
 .room::after {
@@ -488,53 +489,42 @@ header {
     right: 0;
     bottom: 0;
     height: 42%;
-    z-index: 1;
     pointer-events: none;
-    opacity: .28;
+    z-index: 1;
+    opacity: .22;
     background:
         repeating-linear-gradient(
-            102deg,
+            103deg,
             transparent 0 13px,
-            rgba(55,80,42,.12) 14px 16px,
-            transparent 17px 29px
+            rgba(50,75,38,.13) 14px 16px,
+            transparent 17px 30px
         );
 }
 
-/* Il pavimento è una zona distinta */
-.room::before {
-    z-index: 0;
-}
-
-/* I rami sono piattaforme, non pavimento */
 .branch {
-    cursor: pointer;
-    pointer-events: auto;
     box-shadow:
         inset 0 3px 0 rgba(255,255,255,.08),
-        inset 0 -4px 0 rgba(65,40,25,.14);
+        inset 0 -4px 0 rgba(55,35,22,.15);
 }
 
-.branch::after {
-    content: "";
-    position: absolute;
-    inset: 4px 12px;
-    border-radius: 20px;
-    background:
-        repeating-linear-gradient(
-            90deg,
-            rgba(255,255,255,.05) 0 3px,
-            transparent 3px 17px
-        );
+.hammock-rope {
     pointer-events: none;
 }
 
-.branch.two::after {
-    inset: 4px 10px;
+.floor-shadow {
+    position: absolute;
+    width: 55px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(35,55,30,.20);
+    filter: blur(3px);
+    pointer-events: none;
+    z-index: 6;
+    transition: left .15s linear, top .15s linear;
 }
 
-/* Salto */
 .sandrine.jumping {
-    animation: jump 650ms cubic-bezier(.2,.75,.35,1) forwards !important;
+    animation: jump .65s cubic-bezier(.2,.75,.35,1) forwards !important;
 }
 
 @keyframes jump {
@@ -542,26 +532,14 @@ header {
         transform: translate(0,0) scaleX(var(--direction,1)) rotate(0);
     }
     35% {
-        transform: translate(0,-58px) scaleX(var(--direction,1)) rotate(-7deg);
+        transform: translate(0,-55px) scaleX(var(--direction,1)) rotate(-7deg);
     }
     70% {
-        transform: translate(0,-70px) scaleX(var(--direction,1)) rotate(7deg);
+        transform: translate(0,-68px) scaleX(var(--direction,1)) rotate(7deg);
     }
     100% {
         transform: translate(0,0) scaleX(var(--direction,1)) rotate(0);
     }
-}
-
-.floor-shadow {
-    position: absolute;
-    z-index: 5;
-    width: 55px;
-    height: 10px;
-    border-radius: 50%;
-    background: rgba(45,65,35,.18);
-    filter: blur(3px);
-    pointer-events: none;
-    transition: left .15s linear, top .15s linear;
 }
 
 </style>
@@ -646,10 +624,10 @@ header {
         <img src="images/food.png" alt="Cibo">
     </div>
 
-    <!-- OMBRA DI SANDRINA -->
-    <div class="floor-shadow" id="floorShadow"></div>
+    <!-- OMBRA SUL PAVIMENTO -->
+<div class="floor-shadow" id="floorShadow"></div>
 
-    <!-- SANDRINA -->
+<!-- SANDRINA -->
     <div class="sandrine idle" id="sandrine">
         <img id="sandrineImage" src="images/sandrina-idle.png" alt="Sandrina">
     </div>
@@ -820,17 +798,6 @@ const phrases = {
         "No? Peccato.",
         "Annuso e basta.",
         "Ho trovato un posto interessante."
-    ],
-
-    branch: [
-        "Che salto!",
-        "Da qui vedo tutto.",
-        "Questo ramo è mio.",
-        "Un giretto qui sopra.",
-        "Eheheh, ce l'ho fatta.",
-        "Quanto è bello quassù.",
-        "Salto riuscito!",
-        "Ok, ora scendo."
     ],
 
     hide: [
@@ -1166,6 +1133,239 @@ function createEffect(
 }
 
 
+
+/* =====================================================
+   MOVIMENTO SUL PAVIMENTO
+===================================================== */
+
+const FLOOR_TOP_RATIO = .58;
+let onBranch = false;
+
+function floorY() {
+    return room.clientHeight -
+        sandrine.offsetHeight -
+        18;
+}
+
+function floorTop() {
+    return room.clientHeight * FLOOR_TOP_RATIO;
+}
+
+function keepOnFloor(y) {
+    return Math.max(
+        floorTop() + 8,
+        Math.min(floorY(), y)
+    );
+}
+
+function updateFloorShadow() {
+    if (!floorShadow || onBranch) return;
+
+    floorShadow.style.left =
+        `${sandrine.offsetLeft + sandrine.offsetWidth / 2 - 27}px`;
+
+    floorShadow.style.top =
+        `${sandrine.offsetTop + sandrine.offsetHeight - 8}px`;
+}
+
+function returnToFloorAndWalk() {
+    if (draggingSandrina) return;
+
+    onBranch = false;
+    movingToObject = false;
+
+    sandrine.style.transition =
+        "left .15s linear, top .15s linear";
+
+    sandrine.style.top =
+        `${floorY()}px`;
+
+    sandrine.className =
+        "sandrine idle";
+
+    sandrineImage.src =
+        "images/sandrina-idle.png";
+
+    if (floorShadow) {
+        floorShadow.style.opacity = "1";
+    }
+
+    updateFloorShadow();
+
+    setTimeout(
+        moveSandrina,
+        1100
+    );
+}
+
+function jumpOntoBranch(branch) {
+
+    stopMovement();
+
+    movingToObject = true;
+
+    const roomRect =
+        room.getBoundingClientRect();
+
+    const branchRect =
+        branch.getBoundingClientRect();
+
+    const branchCenterX =
+        branchRect.left -
+        roomRect.left +
+        branchRect.width / 2;
+
+    const targetX =
+        Math.max(
+            0,
+            Math.min(
+                room.clientWidth -
+                sandrine.offsetWidth,
+                branchCenterX -
+                sandrine.offsetWidth / 2
+            )
+        );
+
+    /*
+       Il punto di salto resta sul pavimento.
+       Da lì Sandrina salta verticalmente verso il ramo.
+    */
+    const approachY =
+        floorY();
+
+    const direction =
+        targetX >= sandrine.offsetLeft
+            ? 1
+            : -1;
+
+    setSpeech("Aspetta... salto!");
+
+    setStatus("🌿 Sandrina sta andando verso il ramo...");
+
+    walkTo(
+        targetX,
+        approachY,
+        () => {
+
+            if (floorShadow) {
+                floorShadow.style.opacity = "0";
+            }
+
+            sandrine.className =
+                "sandrine jumping";
+
+            sandrine.style.setProperty(
+                "--direction",
+                direction
+            );
+
+            sandrineImage.src =
+                "images/sandrina-idle.png";
+
+            setStatus(
+                "🐾 Sandrina salta sul ramo!"
+            );
+
+            setTimeout(
+                () => {
+
+                    onBranch = true;
+
+                    /*
+                       Posizione sopra la superficie del ramo.
+                    */
+                    const branchY =
+                        branchRect.top -
+                        roomRect.top -
+                        sandrine.offsetHeight +
+                        5;
+
+                    sandrine.style.left =
+                        `${targetX}px`;
+
+                    sandrine.style.top =
+                        `${branchY}px`;
+
+                    sandrine.className =
+                        "sandrine idle";
+
+                    sandrineImage.src =
+                        "images/sandrina-idle.png";
+
+                    setSpeech(
+                        randomPhrase("branch")
+                    );
+
+                    setStatus(
+                        "🌿 Sandrina si è fermata sul ramo."
+                    );
+
+                    createEffect(
+                        "🍃",
+                        targetX + 25,
+                        branchY - 12
+                    );
+
+                    addDiary(
+                        "Sandrina ha fatto un salto sul ramo.",
+                        "🌿"
+                    );
+
+                    /*
+                       Dopo un po' salta giù.
+                    */
+                    setTimeout(
+                        () => {
+
+                            if (!draggingSandrina) {
+
+                                sandrine.className =
+                                    "sandrine jumping";
+
+                                setStatus(
+                                    "🐾 Sandrina salta giù."
+                                );
+
+                                setTimeout(
+                                    returnToFloorAndWalk,
+                                    650
+                                );
+
+                            }
+
+                        },
+                        1900
+                    );
+
+                },
+                650
+            );
+        }
+    );
+}
+
+function setupBranchInteractions() {
+
+    document
+        .querySelector(".branch.one")
+        .addEventListener(
+            "click",
+            () => jumpOntoBranch(
+                document.querySelector(".branch.one")
+            )
+        );
+
+    document
+        .querySelector(".branch.two")
+        .addEventListener(
+            "click",
+            () => jumpOntoBranch(
+                document.querySelector(".branch.two")
+            )
+        );
+}
+
+
 /* =====================================================
    CAMMINATA
 ===================================================== */
@@ -1275,254 +1475,6 @@ function returnToIdleAndWalk(delay = 1800) {
     }, 600);
 }
 
-
-
-/* =====================================================
-   OMBRA SUL PAVIMENTO
-===================================================== */
-
-function updateFloorShadow() {
-
-    if (!floorShadow) return;
-
-    const x =
-        sandrine.offsetLeft +
-        sandrine.offsetWidth / 2 -
-        27;
-
-    const floorY =
-        Math.max(
-            room.clientHeight * .58 + 3,
-            sandrine.offsetTop +
-            sandrine.offsetHeight -
-            8
-        );
-
-    floorShadow.style.left =
-        `${x}px`;
-
-    floorShadow.style.top =
-        `${floorY}px`;
-}
-
-
-/* =====================================================
-   SALTO SU UN RAMO
-===================================================== */
-
-function jumpToBranch(branch) {
-
-    stopMovement();
-
-    movingToObject = true;
-
-    const rect =
-        branch.getBoundingClientRect();
-
-    const roomRect =
-        room.getBoundingClientRect();
-
-    const targetX =
-        rect.left -
-        roomRect.left +
-        (
-            rect.width -
-            sandrine.offsetWidth
-        ) / 2;
-
-    /*
-       Il punto di arrivo è sopra il ramo,
-       non dentro il ramo.
-    */
-    const targetY =
-        rect.top -
-        roomRect.top -
-        sandrine.offsetHeight +
-        5;
-
-    const direction =
-        targetX >= sandrine.offsetLeft
-            ? 1
-            : -1;
-
-    setSpeech(
-        "Aspetta... salto!"
-    );
-
-    setStatus(
-        "🐾 Sandrina sta saltando sul ramo..."
-    );
-
-    /*
-       Prima cammina sul pavimento fino
-       alla verticale del ramo.
-    */
-    const floorTop =
-        room.clientHeight * .58;
-
-    const approachY =
-        Math.max(
-            floorTop + 8,
-            sandrine.offsetTop
-        );
-
-    walkTo(
-        targetX,
-        approachY,
-        () => {
-
-            stopWalkingAnimation();
-
-            sandrine.className =
-                "sandrine jumping";
-
-            if (floorShadow) {
-                floorShadow.style.opacity = "0";
-            }
-
-            sandrine.style.setProperty(
-                "--direction",
-                direction
-            );
-
-            sandrine.style.transform =
-                `translate(0,0) scaleX(${direction})`;
-
-            createEffect(
-                "✨",
-                sandrine.offsetLeft + 25,
-                sandrine.offsetTop - 10
-            );
-
-            setTimeout(
-                () => {
-
-                    /*
-                       Posizione finale sul ramo.
-                    */
-                    sandrine.className =
-                        "sandrine idle";
-
-                    sandrineImage.src =
-                        "images/sandrina-idle.png";
-
-                    sandrine.style.left =
-                        `${targetX}px`;
-
-                    sandrine.style.top =
-                        `${targetY}px`;
-
-                    setStatus(
-                        "🌿 Sandrina è sul ramo."
-                    );
-
-                    setSpeech(
-                        randomPhrase("branch")
-                    );
-
-                    createEffect(
-                        "🍃",
-                        targetX + 25,
-                        targetY - 10
-                    );
-
-                    addDiary(
-                        "Sandrina ha fatto un salto sul ramo.",
-                        "🌿"
-                    );
-
-                    /*
-                       Dopo una breve pausa torna
-                       giù sul pavimento.
-                    */
-                    setTimeout(
-                        () => {
-
-                            if (
-                                !draggingSandrina
-                            ) {
-
-                                const floorY =
-                                    room.clientHeight -
-                                    sandrine.offsetHeight -
-                                    18;
-
-                                sandrine.className =
-                                    "sandrine jumping";
-
-                                sandrine.style.top =
-                                    `${floorY}px`;
-
-                                setTimeout(
-                                    () => {
-
-                                        movingToObject =
-                                            false;
-
-                                        sandrine.className =
-                                            "sandrine idle";
-
-                                        sandrineImage.src =
-                                            "images/sandrina-idle.png";
-
-                                        if (floorShadow) {
-                                            floorShadow.style.opacity = "1";
-                                        }
-
-                                        updateFloorShadow();
-
-                                        setStatus(
-                                            "🐾 Sandrina è tornata sul pavimento."
-                                        );
-
-                                        setTimeout(
-                                            moveSandrina,
-                                            1200
-                                        );
-
-                                    },
-                                    650
-                                );
-
-                            }
-
-                        },
-                        1800
-                    );
-
-                },
-                650
-            );
-
-        }
-    );
-}
-
-
-/* =====================================================
-   RAMI INTERATTIVI
-===================================================== */
-
-function setupBranches() {
-
-    document
-        .querySelector(".branch.one")
-        .addEventListener(
-            "click",
-            () => jumpToBranch(
-                document.querySelector(".branch.one")
-            )
-        );
-
-    document
-        .querySelector(".branch.two")
-        .addEventListener(
-            "click",
-            () => jumpToBranch(
-                document.querySelector(".branch.two")
-            )
-        );
-}
 
 /* =====================================================
    TARGET OGGETTO
@@ -1645,6 +1597,10 @@ function walkTo(
 
 function goToHammock() {
 
+    stopMovement();
+
+    movingToObject = true;
+
     const hammock =
         document.getElementById("hammock");
 
@@ -1654,63 +1610,85 @@ function goToHammock() {
     const roomRect =
         room.getBoundingClientRect();
 
-    /*
-       Sandrina arriva prima sul pavimento
-       sotto l'amaca, poi salta dentro.
-    */
-    const target = {
-        x:
-            hammockRect.left -
-            roomRect.left +
-            (
-                hammockRect.width -
-                sandrine.offsetWidth
-            ) / 2,
+    const targetX =
+        Math.max(
+            0,
+            Math.min(
+                room.clientWidth -
+                sandrine.offsetWidth,
+                hammockRect.left -
+                roomRect.left +
+                (
+                    hammockRect.width -
+                    sandrine.offsetWidth
+                ) / 2
+            )
+        );
 
-        y:
-            room.clientHeight -
-            sandrine.offsetHeight -
-            18
-    };
+    const approachY =
+        floorY();
+
+    const direction =
+        targetX >= sandrine.offsetLeft
+            ? 1
+            : -1;
 
     setSpeech(
         randomPhrase("sleep")
     );
 
     setStatus(
-        "💤 Sandrina sta andando sull'amaca..."
+        "💤 Sandrina sta andando verso l'amaca..."
     );
 
     walkTo(
-        target.x,
-        target.y,
+        targetX,
+        approachY,
         () => {
-
-            sandrine.className =
-                "sandrine jumping";
 
             if (floorShadow) {
                 floorShadow.style.opacity = "0";
             }
 
-            sandrineImage.src =
-                "images/sandrina-idle.png";
+            sandrine.className =
+                "sandrine jumping";
 
             sandrine.style.setProperty(
                 "--direction",
-                1
+                direction
             );
 
+            sandrineImage.src =
+                "images/sandrina-idle.png";
+
             setSpeech(
-                "Hop! Amaca."
+                "Hop! Nell'amaca."
             );
 
             setStatus(
-                "🐾 Sandrina sta saltando sull'amaca..."
+                "🐾 Sandrina salta nell'amaca!"
             );
 
             setTimeout(
                 () => {
+
+                    onBranch = false;
+
+                    /*
+                       L'amaca è appesa al ramo:
+                       Sandrina viene posizionata
+                       direttamente sulla tela.
+                    */
+                    const hammockY =
+                        hammockRect.top -
+                        roomRect.top +
+                        hammockRect.height * .10;
+
+                    sandrine.style.left =
+                        `${targetX}px`;
+
+                    sandrine.style.top =
+                        `${hammockY}px`;
 
                     sandrine.className =
                         "sandrine sleepy";
@@ -1723,73 +1701,44 @@ function goToHammock() {
                     );
 
                     setStatus(
-                        "💤 Sandrina si è accoccolata sull'amaca."
+                        "💤 Sandrina dorme nell'amaca."
                     );
 
                     createEffect(
                         "💤",
-                        target.x + 25,
-                        target.y - 20
+                        targetX + 25,
+                        hammockY - 15
                     );
 
                     addDiary(
-                        "Sandrina si è fatta un pisolino sull'amaca.",
+                        "Sandrina si è fatta un pisolino nell'amaca.",
                         "💤"
                     );
 
                     /*
-                       Dopo il riposo torna al pavimento
-                       e riprende a esplorare.
+                       Dopo il riposo salta giù.
                     */
                     setTimeout(
                         () => {
 
-                            if (
-                                !draggingSandrina
-                            ) {
-
-                                const floorY =
-                                    room.clientHeight -
-                                    sandrine.offsetHeight -
-                                    18;
+                            if (!draggingSandrina) {
 
                                 sandrine.className =
                                     "sandrine jumping";
 
-                                sandrine.style.top =
-                                    `${floorY}px`;
+                                setSpeech(
+                                    "Ok... ora mi alzo."
+                                );
 
                                 setTimeout(
-                                    () => {
-
-                                        movingToObject =
-                                            false;
-
-                                        sandrine.className =
-                                            "sandrine idle";
-
-                                        sandrineImage.src =
-                                            "images/sandrina-idle.png";
-
-                                        if (floorShadow) {
-                                            floorShadow.style.opacity = "1";
-                                        }
-
-                                        updateFloorShadow();
-
-                                        setTimeout(
-                                            moveSandrina,
-                                            1200
-                                        );
-
-                                    },
+                                    returnToFloorAndWalk,
                                     650
                                 );
 
                             }
 
                         },
-                        3000
+                        3200
                     );
 
                 },
@@ -1799,7 +1748,6 @@ function goToHammock() {
         }
     );
 }
-
 
 /* =====================================================
    RIFUGIO
@@ -2362,16 +2310,13 @@ function dragSandrina(e) {
         room.clientWidth -
         sandrine.offsetWidth;
 
-    const floorTop =
-        room.clientHeight * .58;
-
-    const minY =
-        floorTop + 8;
-
     const maxY =
         room.clientHeight -
         sandrine.offsetHeight -
         18;
+
+    const minY =
+        floorTop() + 8;
 
     x =
         Math.max(
@@ -2529,34 +2474,18 @@ function moveSandrina() {
     const sandrinaHeight =
         sandrine.offsetHeight;
 
-    /*
-       Sandrina cammina SOLO sul pavimento.
-       Il pavimento inizia circa al 58% della stanza.
-       I rami sono quindi "piattaforme" raggiungibili
-       solo tramite salto.
-    */
-
-    const floorTop =
-        roomHeight * .58;
-
     const marginX = 15;
-
-    const floorPaddingTop = 8;
-    const floorPaddingBottom = 18;
-
-    const minY =
-        floorTop +
-        floorPaddingTop;
-
-    const maxY =
-        roomHeight -
-        sandrinaHeight -
-        floorPaddingBottom;
+    const marginY = 30;
 
     const maxX =
         roomWidth -
         sandrinaWidth -
         marginX;
+
+    const maxY =
+        roomHeight -
+        sandrinaHeight -
+        marginY;
 
     const x =
         marginX +
@@ -2567,11 +2496,11 @@ function moveSandrina() {
         );
 
     const y =
-        minY +
+        marginY +
         Math.random() *
         Math.max(
             1,
-            maxY - minY
+            maxY - marginY
         );
 
     const currentX =
@@ -2607,11 +2536,6 @@ function moveSandrina() {
     sandrine.className =
         "sandrine walking";
 
-    sandrine.style.setProperty(
-        "--direction",
-        direction
-    );
-
     sandrine.style.transform =
         `translate(0,0) scaleX(${direction})`;
 
@@ -2627,8 +2551,6 @@ function moveSandrina() {
 
         sandrine.style.top =
             `${y}px`;
-
-        updateFloorShadow();
 
     });
 
@@ -2651,8 +2573,6 @@ function moveSandrina() {
 
                     sandrineImage.src =
                         "images/sandrina-idle.png";
-
-                    updateFloorShadow();
 
                     if (
                         Math.random() < .45
@@ -2683,7 +2603,7 @@ function moveSandrina() {
 }
 
 
- /* =====================================================
+/* =====================================================
    EVENTI CASUALI
 ===================================================== */
 
@@ -2852,8 +2772,6 @@ function updateTime() {
 loadGame();
 updateTime();
 updateUI();
-setupBranches();
-updateFloorShadow();
 
 
 setTimeout(
